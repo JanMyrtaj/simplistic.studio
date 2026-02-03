@@ -8,6 +8,7 @@ import { ProjectsPage } from "./components/ProjectsPage";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 
 function MainApp() {
   const [isDark, setIsDark] = useState(true);
@@ -66,6 +67,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <MainApp />
+      <Analytics />
     </BrowserRouter>
   );
 }
