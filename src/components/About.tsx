@@ -18,7 +18,7 @@ export function About({ isDark }: AboutProps) {
             transition={{ duration: 0.8, ease: "easeOut" }}
           >
             <h2 className={`${isDark ? "text-white" : "text-neutral-900"} mb-6`}>
-              About simplistic.studio
+              About simplistic | studio
             </h2>
             <div className={`space-y-4 ${isDark ? "text-neutral-300" : "text-neutral-600"}`}>
               <p>
@@ -46,7 +46,7 @@ export function About({ isDark }: AboutProps) {
           >
             <img 
               src={isDark ? darkModeImage : lightModeImage} 
-              alt="Simplistic.studio Architecture Banner" 
+              alt="Simplistic | Studio Architecture Banner" 
               className="w-full h-full object-cover"
             />
           </motion.div>

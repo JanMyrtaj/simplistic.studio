@@ -24,7 +24,7 @@ export function Hero({ isDark }: HeroProps) {
           transition={{ duration: 0.8, ease: "easeOut" }}
           className={`text-4xl md:text-6xl lg:text-7xl mb-6 ${isDark ? "text-white" : "text-neutral-900"}`}
         >
-          simplistic.studio
+          simplistic | studio
         </motion.h1>
         <motion.p 
           initial={{ opacity: 0, y: 30 }}

@@ -6,7 +6,7 @@ Follow these steps to deploy your project to GitHub:
 
 1. Go to [GitHub.com](https://github.com) and sign in
 2. Click the **+** icon in the top right → **New repository**
-3. Name it: `simplistic.studio` (or any name you prefer)
+3. Name it: `simplistic | studio` (or any name you prefer)
 4. Choose **Public** or **Private**
 5. **DO NOT** initialize with README, .gitignore, or license (we already have these)
 6. Click **Create repository**
@@ -23,7 +23,7 @@ cd c:\Users\win-ks\Desktop\simplistic.studio
 git add .
 
 # Create your first commit
-git commit -m "Initial commit: simplistic.studio portfolio website"
+git commit -m "Initial commit: simplistic | studio portfolio website"
 
 # Add your GitHub repository as remote (replace YOUR_USERNAME with your GitHub username)
 git remote add origin https://github.com/YOUR_USERNAME/simplistic.studio.git
@@ -37,11 +37,11 @@ git push -u origin main
 
 1. Go to [vercel.com](https://vercel.com) and sign in with GitHub
 2. Click **Add New Project**
-3. Import your `simplistic.studio` repository
+3. Import your `simplistic | studio` repository
 4. Vercel will auto-detect Vite settings:
    - **Framework Preset**: Vite
    - **Build Command**: `npm run build`
-   - **Output Directory**: `dist`
+   - **Output Directory**: `dist` (this is now configured correctly)
 5. Click **Deploy**
 6. Your site will be live in minutes!
 
@@ -49,7 +49,7 @@ git push -u origin main
 
 1. Go to [netlify.com](https://netlify.com) and sign in with GitHub
 2. Click **Add new site** → **Import an existing project**
-3. Select your `simplistic.studio` repository
+3. Select your `simplistic | studio` repository
 4. Configure build settings:
    - **Build command**: `npm run build`
    - **Publish directory**: `dist`
@@ -64,6 +64,13 @@ git push -u origin main
 
 ## Troubleshooting
 
+### Deprecation Warnings (Safe to Ignore)
+If you see warnings like:
+```
+npm warn deprecated node-domexception@1.0.0
+```
+These are **harmless warnings** from dependencies and won't break your build. You can safely ignore them.
+
 ### If you get authentication errors:
 ```powershell
 # Use GitHub CLI or Personal Access Token
@@ -74,6 +81,7 @@ git remote set-url origin https://YOUR_TOKEN@github.com/YOUR_USERNAME/simplistic
 - Check that all dependencies are in `package.json`
 - Ensure Node.js version is 18+ in your deployment settings
 - Check build logs for specific errors
+- The deprecation warnings are normal and won't cause build failures
 
 ## Next Steps
 

@@ -1,4 +1,4 @@
-# Supabase Setup Guide for simplistic.studio
+# Supabase Setup Guide for simplistic | studio
 
 This guide will help you set up Supabase for your architecture website.
 

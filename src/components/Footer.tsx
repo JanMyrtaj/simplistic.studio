@@ -23,7 +23,7 @@ export function Footer({ isDark, navigateTo }: FooterProps) {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           <div>
-            <h3 className="mb-4">simplistic.studio</h3>
+            <h3 className="mb-4">simplistic | studio</h3>
             <p className={isDark ? "text-neutral-400" : "text-neutral-400"}>
               Creating timeless spaces through minimalist design and thoughtful architecture.
             </p>
@@ -71,7 +71,7 @@ export function Footer({ isDark, navigateTo }: FooterProps) {
             <h4 className="mb-4">Follow Us</h4>
             <div className="flex gap-4">
               <a
-                href="https://www.instagram.com/simplistic.studio/"
+                href="https://www.instagram.com/simplistic | studio/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`w-10 h-10 ${
@@ -127,7 +127,7 @@ export function Footer({ isDark, navigateTo }: FooterProps) {
         </div>
 
         <div className={`border-t ${isDark ? "border-neutral-900" : "border-neutral-800"} pt-8 text-center text-neutral-400`}>
-          <p>© {currentYear} simplistic.studio. All rights reserved.</p>
+          <p>© {currentYear} simplistic | studio. All rights reserved.</p>
         </div>
       </div>
     </footer>

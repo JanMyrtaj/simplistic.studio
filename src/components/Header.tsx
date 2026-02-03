@@ -53,7 +53,7 @@ export function Header({ isDark, toggleTheme, currentPage, navigateTo }: HeaderP
               isDark ? "text-white hover:text-neutral-300" : "text-neutral-900 hover:text-neutral-600"
             } transition-colors`}
           >
-            simplistic.studio
+            simplistic | studio
           </button>
 
           {/* Desktop Navigation */}

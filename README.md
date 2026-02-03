@@ -1,4 +1,4 @@
-# simplistic.studio
+# simplistic | studio
 
 A minimalist architecture portfolio website built with React, TypeScript, and Vite.
 

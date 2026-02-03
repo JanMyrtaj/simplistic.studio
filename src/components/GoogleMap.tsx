@@ -199,7 +199,7 @@ export function GoogleMap({ isDark }: GoogleMapProps) {
   const scriptLoadedRef = useRef(false);
   const isInitializingRef = useRef(false);
 
-  // Location: Simplistic.studio, Rruga Muharrem Ibrahimi, Gjilan, Kosovo
+  // Location: Simplistic | Studio, Rruga Muharrem Ibrahimi, Gjilan, Kosovo
   const location = { lat: 42.46768359819896, lng: 21.457595169625794 };
 
   const apiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
@@ -229,7 +229,7 @@ export function GoogleMap({ isDark }: GoogleMapProps) {
       const markerOptions: GoogleMapsMarkerOptions = {
         position: location,
         map: map,
-        title: 'Simplistic.studio - Rruga Muharrem Ibrahimi, Gjilan, Kosovo'
+        title: 'Simplistic | Studio - Rruga Muharrem Ibrahimi, Gjilan, Kosovo'
       };
       new window.google.maps.Marker(markerOptions);
 
@@ -318,7 +318,7 @@ export function GoogleMap({ isDark }: GoogleMapProps) {
           allowFullScreen={true}
           loading="lazy" 
           referrerPolicy="no-referrer-when-downgrade"
-          title="Simplistic.studio Location - Rruga Muharrem Ibrahimi, Gjilan, Kosovo"
+          title="Simplistic | Studio Location - Rruga Muharrem Ibrahimi, Gjilan, Kosovo"
         />
       </div>
     );
