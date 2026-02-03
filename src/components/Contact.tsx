@@ -1,6 +1,5 @@
 import { Mail, Phone, MapPin } from "lucide-react";
 import { useState } from "react";
-import { GoogleMap } from "./GoogleMap";
 import { motion } from 'motion/react';
 import { projectId } from '../utils/supabase/info';
 
@@ -232,11 +231,6 @@ export function Contact({ isDark }: ContactProps) {
             </div>
           </motion.div>
         </div>
-      </div>
-
-      {/* Google Map Section */}
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 mt-16">
-        <GoogleMap isDark={isDark} />
       </div>
     </section>
   );
