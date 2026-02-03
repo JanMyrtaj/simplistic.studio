@@ -2,6 +2,8 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { projectId } from '../utils/supabase/info';
 import { motion, AnimatePresence } from 'motion/react';
+import React from "react";
+
 // Gjakova, Kosovo
 import projectLivingKitchen from '../assets/gjakova/project-living-kitchen.png';
 import projectLivingRoom from '../assets/gjakova/project-living-room.png';
@@ -53,16 +55,14 @@ import image00075 from '../assets/zurich/image00075.jpeg';
 import image00076 from '../assets/zurich/image00076.jpeg';
 import image00077 from '../assets/zurich/image00077.jpeg';
 // Prishtina, Kosovo
-import prishtinaImage1 from '../assets/prishtina/6FD4A0A3-5939-419A-B2C4-E30804C248D8.jpeg';
-import prishtinaImage2 from '../assets/prishtina/A77B1381-F556-49BC-B401-E16E605FBAAA.jpeg';
-import prishtinaImage3 from '../assets/prishtina/IMG_8992.jpeg';
-import prishtinaImage4 from '../assets/prishtina/IMG_8993.jpeg';
-import prishtinaImage5 from '../assets/prishtina/IMG_8994.jpeg';
-import prishtinaImage6 from '../assets/prishtina/IMG_8995.jpeg';
-import prishtinaImage7 from '../assets/prishtina/IMG_8996.jpeg';
-import prishtinaImage8 from '../assets/prishtina/IMG_8997.jpeg';
-import prishtinaImage9 from '../assets/prishtina/IMG_8998.jpeg';
-import prishtinaImage10 from '../assets/prishtina/IMG_8999.jpeg';
+import prishtinaImage1 from '../assets/prishtina/IMG_8992.jpeg';
+import prishtinaImage2 from '../assets/prishtina/IMG_8993.jpeg';
+import prishtinaImage3 from '../assets/prishtina/IMG_8994.jpeg';
+import prishtinaImage4 from '../assets/prishtina/IMG_8995.jpeg';
+import prishtinaImage5 from '../assets/prishtina/IMG_8996.jpeg';
+import prishtinaImage6 from '../assets/prishtina/IMG_8997.jpeg';
+import prishtinaImage7 from '../assets/prishtina/IMG_8998.jpeg';
+import prishtinaImage8 from '../assets/prishtina/IMG_8999.jpeg';
 
 interface Project {
   id: string;
@@ -128,16 +128,14 @@ const ZURICH_PROJECTS: Project[] = [
 ];
 
 const PRISHTINA_PROJECTS: Project[] = [
-  { id: 'prishtina-1', title: 'Modern Interior Design', description: 'Contemporary interior space featuring clean lines, neutral tones, and elegant furnishings.', imageUrl: prishtinaImage1, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
-  { id: 'prishtina-2', title: 'Sophisticated Living Space', description: 'Elegant living area with modern design elements and refined aesthetic.', imageUrl: prishtinaImage2, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
-  { id: 'prishtina-3', title: 'Contemporary Architecture', description: 'Modern architectural design showcasing minimalist principles and functional beauty.', imageUrl: prishtinaImage3, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
-  { id: 'prishtina-4', title: 'Refined Interior Space', description: 'Sophisticated interior with thoughtful design and elegant finishes.', imageUrl: prishtinaImage4, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
-  { id: 'prishtina-5', title: 'Modern Design Project', description: 'Contemporary design project featuring clean aesthetics and functional elegance.', imageUrl: prishtinaImage5, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
-  { id: 'prishtina-6', title: 'Elegant Living Area', description: 'Beautiful living space with modern furnishings and sophisticated design.', imageUrl: prishtinaImage6, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
-  { id: 'prishtina-7', title: 'Contemporary Space', description: 'Modern interior design with minimalist approach and refined details.', imageUrl: prishtinaImage7, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
-  { id: 'prishtina-8', title: 'Sophisticated Design', description: 'Elegant design project showcasing contemporary architecture and interior excellence.', imageUrl: prishtinaImage8, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
-  { id: 'prishtina-9', title: 'Modern Interior', description: 'Contemporary interior space with clean lines and sophisticated design elements.', imageUrl: prishtinaImage9, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
-  { id: 'prishtina-10', title: 'Refined Architecture', description: 'Beautiful architectural design featuring modern aesthetics and functional elegance.', imageUrl: prishtinaImage10, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'prishtina-1', title: 'Contemporary Architecture', description: 'Modern architectural design showcasing minimalist principles and functional beauty.', imageUrl: prishtinaImage1, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'prishtina-2', title: 'Refined Interior Space', description: 'Sophisticated interior with thoughtful design and elegant finishes.', imageUrl: prishtinaImage2, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'prishtina-3', title: 'Modern Design Project', description: 'Contemporary design project featuring clean aesthetics and functional elegance.', imageUrl: prishtinaImage3, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'prishtina-4', title: 'Elegant Living Area', description: 'Beautiful living space with modern furnishings and sophisticated design.', imageUrl: prishtinaImage4, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'prishtina-5', title: 'Contemporary Space', description: 'Modern interior design with minimalist approach and refined details.', imageUrl: prishtinaImage5, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'prishtina-6', title: 'Sophisticated Design', description: 'Elegant design project showcasing contemporary architecture and interior excellence.', imageUrl: prishtinaImage6, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'prishtina-7', title: 'Modern Interior', description: 'Contemporary interior space with clean lines and sophisticated design elements.', imageUrl: prishtinaImage7, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'prishtina-8', title: 'Refined Architecture', description: 'Beautiful architectural design featuring modern aesthetics and functional elegance.', imageUrl: prishtinaImage8, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
 ];
 
 interface ProjectsPageProps {
@@ -266,20 +264,20 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
 
         {/* Prishtina section — FIRST */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pb-20">
-          <div className="relative overflow-hidden">
+          <div className="relative w-full overflow-hidden rounded-lg bg-neutral-200/20" style={{ aspectRatio: '5/4', minHeight: 240 }}>
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={`prishtina-image-${prishtinaIndex}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-                className="relative"
+                transition={{ duration: 0.25, ease: "easeInOut" }}
+                className="absolute inset-0"
               >
                 <img
                   src={PRISHTINA_PROJECTS[prishtinaIndex].imageUrl}
                   alt={PRISHTINA_PROJECTS[prishtinaIndex].title}
-                  className="w-full h-auto object-cover"
+                  className="block w-full h-full object-cover"
                   loading="lazy"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23ddd" width="800" height="600"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="20" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage not available%3C/text%3E%3C/svg%3E';
@@ -311,14 +309,14 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
               {prishtinaIndex + 1} / {PRISHTINA_PROJECTS.length}
             </div>
           </div>
-          <div className="overflow-hidden">
+          <div className="overflow-hidden min-h-[220px]">
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={`prishtina-description-${prishtinaIndex}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
+                transition={{ duration: 0.25, ease: "easeInOut" }}
                 className="space-y-6"
               >
                 <div>
@@ -354,20 +352,20 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
         {/* Gjakova section — SECOND */}
         <div className={`mt-24 mb-8 pt-20 pb-8 border-t ${isDark ? "border-neutral-700" : "border-neutral-200"}`} style={{ marginTop: '6rem', paddingTop: '5rem' }}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="relative overflow-hidden">
+            <div className="relative w-full overflow-hidden rounded-lg bg-neutral-200/20" style={{ aspectRatio: '5/4', minHeight: 240 }}>
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={`image-${currentIndex}`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                  className="relative"
+                  transition={{ duration: 0.25, ease: "easeInOut" }}
+                  className="absolute inset-0"
                 >
                   <img
                     src={currentProject.imageUrl}
                     alt={currentProject.title}
-                    className="w-full h-auto object-cover"
+                    className="block w-full h-full object-cover"
                     loading="lazy"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23ddd" width="800" height="600"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="20" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage not available%3C/text%3E%3C/svg%3E';
@@ -399,14 +397,14 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                 {currentIndex + 1} / {projects.length}
               </div>
             </div>
-            <div className="overflow-hidden">
+            <div className="overflow-hidden min-h-[220px]">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={`description-${currentIndex}`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  transition={{ duration: 0.25, ease: "easeInOut" }}
                   className="space-y-6"
                 >
                   <div>
@@ -443,20 +441,20 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
         {/* Zurich section — THIRD */}
         <div className={`mt-24 mb-8 pt-20 pb-8 border-t ${isDark ? "border-neutral-700" : "border-neutral-200"}`} style={{ marginTop: '6rem', paddingTop: '5rem' }}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="relative overflow-hidden">
+            <div className="relative w-full overflow-hidden rounded-lg bg-neutral-200/20" style={{ aspectRatio: '5/4', minHeight: 240 }}>
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={`zurich-image-${zurichIndex}`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                  className="relative"
+                  transition={{ duration: 0.25, ease: "easeInOut" }}
+                  className="absolute inset-0"
                 >
                   <img
                     src={ZURICH_PROJECTS[zurichIndex].imageUrl}
                     alt={ZURICH_PROJECTS[zurichIndex].title}
-                    className="w-full h-auto object-cover"
+                    className="block w-full h-full object-cover"
                     loading="lazy"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23ddd" width="800" height="600"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="20" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage not available%3C/text%3E%3C/svg%3E';
@@ -488,14 +486,14 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                 {zurichIndex + 1} / {ZURICH_PROJECTS.length}
               </div>
             </div>
-            <div className="overflow-hidden">
+            <div className="overflow-hidden min-h-[220px]">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={`zurich-description-${zurichIndex}`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  transition={{ duration: 0.25, ease: "easeInOut" }}
                   className="space-y-6"
                 >
               <div>
