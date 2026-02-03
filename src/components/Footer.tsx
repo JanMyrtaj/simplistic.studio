@@ -71,7 +71,7 @@ export function Footer({ isDark, navigateTo }: FooterProps) {
             <h4 className="mb-4">Follow Us</h4>
             <div className="flex gap-4">
               <a
-                href="https://www.instagram.com/simplistic | studio/"
+                href="https://www.instagram.com/simplistic.studio?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
                 target="_blank"
                 rel="noopener noreferrer"
                 className={`w-10 h-10 ${

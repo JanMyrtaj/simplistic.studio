@@ -1,4 +1,4 @@
-import { Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin, Instagram } from "lucide-react";
 import { useState } from "react";
 import { motion } from 'motion/react';
 import { projectId } from '../utils/supabase/info';
@@ -215,6 +215,20 @@ export function Contact({ isDark }: ContactProps) {
                       Rruga Muharrem Ibrahimi<br />
                       Kosovo, Gjilan
                     </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <Instagram className={`${isDark ? "text-white" : "text-neutral-900"} mt-1`} size={20} />
+                  <div>
+                    <p className={`${isDark ? "text-white" : "text-neutral-900"} mb-1`}>Instagram</p>
+                    <a
+                      href="https://www.instagram.com/simplistic.studio?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`${isDark ? "text-neutral-300 hover:text-white" : "text-neutral-600 hover:text-neutral-900"} transition-colors underline`}
+                    >
+                      @simplistic.studio
+                    </a>
                   </div>
                 </div>
               </div>
