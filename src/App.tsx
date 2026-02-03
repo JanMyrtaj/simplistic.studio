@@ -9,8 +9,15 @@ import { ScrollToTop } from "./components/ScrollToTop";
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 
+function getInitialTheme(): boolean {
+  if (typeof window === "undefined") return true;
+  const saved = localStorage.getItem("theme");
+  if (saved === "dark" || saved === "light") return saved === "dark";
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+}
+
 function MainApp() {
-  const [isDark, setIsDark] = useState(true);
+  const [isDark, setIsDark] = useState(getInitialTheme);
   const navigate = useNavigate();
   const location = useLocation();
   
@@ -24,10 +31,16 @@ function MainApp() {
   }, []);
 
   useEffect(() => {
-    localStorage.setItem("theme", isDark ? "dark" : "light");
-  }, [isDark]);
+    const media = window.matchMedia("(prefers-color-scheme: dark)");
+    const handleChange = () => {
+      if (!localStorage.getItem("theme")) setIsDark(media.matches);
+    };
+    media.addEventListener("change", handleChange);
+    return () => media.removeEventListener("change", handleChange);
+  }, []);
 
   const toggleTheme = () => {
+    localStorage.setItem("theme", isDark ? "light" : "dark");
     setIsDark(!isDark);
   };
 
