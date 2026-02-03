@@ -36,7 +36,6 @@ import image00030 from '../assets/gjakova/image00030.jpeg';
 import image00031 from '../assets/gjakova/image00031.jpeg';
 import image00032 from '../assets/gjakova/image00032.jpeg';
 // Zurich, Switzerland
-import projectEntryway from '../assets/zurich/project-entryway.png';
 import projectKitchen from '../assets/zurich/project-kitchen.png';
 import projectBathroom from '../assets/zurich/project-bathroom.png';
 import image00064 from '../assets/zurich/image00064.jpeg';
@@ -53,6 +52,17 @@ import image00074 from '../assets/zurich/image00074.jpeg';
 import image00075 from '../assets/zurich/image00075.jpeg';
 import image00076 from '../assets/zurich/image00076.jpeg';
 import image00077 from '../assets/zurich/image00077.jpeg';
+// Prishtina, Kosovo
+import prishtinaImage1 from '../assets/prishtina/6FD4A0A3-5939-419A-B2C4-E30804C248D8.jpeg';
+import prishtinaImage2 from '../assets/prishtina/A77B1381-F556-49BC-B401-E16E605FBAAA.jpeg';
+import prishtinaImage3 from '../assets/prishtina/IMG_8992.jpeg';
+import prishtinaImage4 from '../assets/prishtina/IMG_8993.jpeg';
+import prishtinaImage5 from '../assets/prishtina/IMG_8994.jpeg';
+import prishtinaImage6 from '../assets/prishtina/IMG_8995.jpeg';
+import prishtinaImage7 from '../assets/prishtina/IMG_8996.jpeg';
+import prishtinaImage8 from '../assets/prishtina/IMG_8997.jpeg';
+import prishtinaImage9 from '../assets/prishtina/IMG_8998.jpeg';
+import prishtinaImage10 from '../assets/prishtina/IMG_8999.jpeg';
 
 interface Project {
   id: string;
@@ -99,7 +109,6 @@ const DEFAULT_PROJECTS: Project[] = [
 ];
 
 const ZURICH_PROJECTS: Project[] = [
-  { id: 'zurich-1', title: 'Modern Entryway', description: 'Entryway with fluted wall paneling, dark wood floating shelf, vase and lamp, and built-in storage with base LED lighting.', imageUrl: projectEntryway, category: 'Zurich, Switzerland', createdAt: new Date().toISOString() },
   { id: 'zurich-2', title: 'Contemporary Kitchen', description: 'Kitchen with marble island and bar stools, marble backsplash, dark wood paneling, and pendant lights.', imageUrl: projectKitchen, category: 'Zurich, Switzerland', createdAt: new Date().toISOString() },
   { id: 'zurich-3', title: 'Minimalist Bathroom', description: 'Bathroom with wall-mounted toilet, integrated strip lighting, towel bars, and recessed shelving with rolled towels.', imageUrl: projectBathroom, category: 'Zurich, Switzerland', createdAt: new Date().toISOString() },
   { id: 'zurich-4', title: 'Entry with Slatted Wall', description: 'Entry with slatted accent wall, dark floating shelf with vase and lamp, and taupe storage unit with base lighting.', imageUrl: image00064, category: 'Zurich, Switzerland', createdAt: new Date().toISOString() },
@@ -118,6 +127,19 @@ const ZURICH_PROJECTS: Project[] = [
   { id: 'zurich-17', title: 'Marble Staircase Entry', description: 'Entry with multi-level marble staircase, integrated step lighting, and glass railing.', imageUrl: image00077, category: 'Zurich, Switzerland', createdAt: new Date().toISOString() },
 ];
 
+const PRISHTINA_PROJECTS: Project[] = [
+  { id: 'prishtina-1', title: 'Modern Interior Design', description: 'Contemporary interior space featuring clean lines, neutral tones, and elegant furnishings.', imageUrl: prishtinaImage1, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'prishtina-2', title: 'Sophisticated Living Space', description: 'Elegant living area with modern design elements and refined aesthetic.', imageUrl: prishtinaImage2, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'prishtina-3', title: 'Contemporary Architecture', description: 'Modern architectural design showcasing minimalist principles and functional beauty.', imageUrl: prishtinaImage3, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'prishtina-4', title: 'Refined Interior Space', description: 'Sophisticated interior with thoughtful design and elegant finishes.', imageUrl: prishtinaImage4, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'prishtina-5', title: 'Modern Design Project', description: 'Contemporary design project featuring clean aesthetics and functional elegance.', imageUrl: prishtinaImage5, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'prishtina-6', title: 'Elegant Living Area', description: 'Beautiful living space with modern furnishings and sophisticated design.', imageUrl: prishtinaImage6, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'prishtina-7', title: 'Contemporary Space', description: 'Modern interior design with minimalist approach and refined details.', imageUrl: prishtinaImage7, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'prishtina-8', title: 'Sophisticated Design', description: 'Elegant design project showcasing contemporary architecture and interior excellence.', imageUrl: prishtinaImage8, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'prishtina-9', title: 'Modern Interior', description: 'Contemporary interior space with clean lines and sophisticated design elements.', imageUrl: prishtinaImage9, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'prishtina-10', title: 'Refined Architecture', description: 'Beautiful architectural design featuring modern aesthetics and functional elegance.', imageUrl: prishtinaImage10, category: 'Prishtina, Kosovo', createdAt: new Date().toISOString() },
+];
+
 interface ProjectsPageProps {
   isDark: boolean;
 }
@@ -125,6 +147,7 @@ interface ProjectsPageProps {
 export function ProjectsPage({ isDark }: ProjectsPageProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [zurichIndex, setZurichIndex] = useState(0);
+  const [prishtinaIndex, setPrishtinaIndex] = useState(0);
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -187,6 +210,14 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
     setZurichIndex((prev) => (prev - 1 + ZURICH_PROJECTS.length) % ZURICH_PROJECTS.length);
   };
 
+  const nextPrishtina = () => {
+    setPrishtinaIndex((prev) => (prev + 1) % PRISHTINA_PROJECTS.length);
+  };
+
+  const prevPrishtina = () => {
+    setPrishtinaIndex((prev) => (prev - 1 + PRISHTINA_PROJECTS.length) % PRISHTINA_PROJECTS.length);
+  };
+
   if (isLoading) {
     return (
       <div className={`min-h-screen ${isDark ? "bg-neutral-900" : "bg-white"} pt-20 flex items-center justify-center`}>
@@ -226,12 +257,19 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
           </p>
         </div>
 
+        {/* 
+          PROJECT SECTIONS ORDER:
+          Sections are displayed in order from top to bottom.
+          To add a new section, insert it HERE (right after this comment) so it appears first.
+          Current order: Prishtina → Gjakova → Zurich
+        */}
+
+        {/* Prishtina section — FIRST */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pb-20">
-          {/* Image on the left with navigation arrows */}
           <div className="relative overflow-hidden">
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
-                key={`image-${currentIndex}`}
+                key={`prishtina-image-${prishtinaIndex}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
@@ -239,8 +277,8 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                 className="relative"
               >
                 <img
-                  src={currentProject.imageUrl}
-                  alt={currentProject.title}
+                  src={PRISHTINA_PROJECTS[prishtinaIndex].imageUrl}
+                  alt={PRISHTINA_PROJECTS[prishtinaIndex].title}
                   className="w-full h-auto object-cover"
                   loading="lazy"
                   onError={(e) => {
@@ -249,22 +287,20 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                 />
               </motion.div>
             </AnimatePresence>
-
-            {/* Navigation Arrows */}
             <button
-              onClick={prevProject}
-              className={`absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full ${
+              onClick={prevPrishtina}
+              className={`absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full z-10 ${
                 isDark ? "bg-white/90 text-neutral-900 hover:bg-white" : "bg-neutral-900/90 text-white hover:bg-neutral-900"
-              } transition-colors shadow-lg z-10`}
+              } transition-colors shadow-lg`}
               aria-label="Previous project"
             >
               <ChevronLeft size={24} />
             </button>
             <button
-              onClick={nextProject}
-              className={`absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full ${
+              onClick={nextPrishtina}
+              className={`absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full z-10 ${
                 isDark ? "bg-white/90 text-neutral-900 hover:bg-white" : "bg-neutral-900/90 text-white hover:bg-neutral-900"
-              } transition-colors shadow-lg z-10`}
+              } transition-colors shadow-lg`}
               aria-label="Next project"
             >
               <ChevronRight size={24} />
@@ -272,55 +308,139 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
             <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full z-10 ${
               isDark ? "bg-white/90 text-neutral-900" : "bg-neutral-900/90 text-white"
             }`}>
-              {currentIndex + 1} / {projects.length}
+              {prishtinaIndex + 1} / {PRISHTINA_PROJECTS.length}
             </div>
           </div>
-
-          {/* Description on the right */}
           <div className="overflow-hidden">
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
-                key={`description-${currentIndex}`}
+                key={`prishtina-description-${prishtinaIndex}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2, ease: "easeOut" }}
                 className="space-y-6"
               >
-            <div>
-              <span className={`${isDark ? "text-neutral-400" : "text-neutral-500"} uppercase tracking-wider`}>
-                {currentProject.category}
-              </span>
-              <h2 className={`${isDark ? "text-white" : "text-neutral-900"} mt-3 mb-4`}>
-                {currentProject.title}
-              </h2>
-            </div>
-
-            <p className={`${isDark ? "text-neutral-300" : "text-neutral-600"} leading-relaxed`}>
-              {currentProject.description}
-            </p>
-
-            {/* Navigation dots */}
-            <div className="flex gap-2 pt-4">
-              {projects.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => setCurrentIndex(index)}
-                  className={`h-2 rounded-full transition-all duration-200 ${
-                    index === currentIndex
-                      ? `w-8 ${isDark ? "bg-white" : "bg-neutral-900"}`
-                      : `w-2 ${isDark ? "bg-neutral-700" : "bg-neutral-300"}`
-                  }`}
-                  aria-label={`Go to project ${index + 1}`}
-                />
-              ))}
-            </div>
+                <div>
+                  <span className={`${isDark ? "text-neutral-400" : "text-neutral-500"} uppercase tracking-wider`}>
+                    {PRISHTINA_PROJECTS[prishtinaIndex].category}
+                  </span>
+                  <h2 className={`${isDark ? "text-white" : "text-neutral-900"} mt-3 mb-4`}>
+                    {PRISHTINA_PROJECTS[prishtinaIndex].title}
+                  </h2>
+                </div>
+                <p className={`${isDark ? "text-neutral-300" : "text-neutral-600"} leading-relaxed`}>
+                  {PRISHTINA_PROJECTS[prishtinaIndex].description}
+                </p>
+                <div className="flex gap-2 pt-4">
+                  {PRISHTINA_PROJECTS.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setPrishtinaIndex(index)}
+                      className={`h-2 rounded-full transition-all duration-200 ${
+                        index === prishtinaIndex
+                          ? `w-8 ${isDark ? "bg-white" : "bg-neutral-900"}`
+                          : `w-2 ${isDark ? "bg-neutral-700" : "bg-neutral-300"}`
+                      }`}
+                      aria-label={`Go to project ${index + 1}`}
+                    />
+                  ))}
+                </div>
               </motion.div>
             </AnimatePresence>
           </div>
         </div>
 
-        {/* Zurich section — same layout and animations as Gjakova */}
+        {/* Gjakova section — SECOND */}
+        <div className={`mt-24 mb-8 pt-20 pb-8 border-t ${isDark ? "border-neutral-700" : "border-neutral-200"}`} style={{ marginTop: '6rem', paddingTop: '5rem' }}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="relative overflow-hidden">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={`image-${currentIndex}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  className="relative"
+                >
+                  <img
+                    src={currentProject.imageUrl}
+                    alt={currentProject.title}
+                    className="w-full h-auto object-cover"
+                    loading="lazy"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23ddd" width="800" height="600"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="20" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage not available%3C/text%3E%3C/svg%3E';
+                    }}
+                  />
+                </motion.div>
+              </AnimatePresence>
+              <button
+                onClick={prevProject}
+                className={`absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full z-10 ${
+                  isDark ? "bg-white/90 text-neutral-900 hover:bg-white" : "bg-neutral-900/90 text-white hover:bg-neutral-900"
+                } transition-colors shadow-lg`}
+                aria-label="Previous project"
+              >
+                <ChevronLeft size={24} />
+              </button>
+              <button
+                onClick={nextProject}
+                className={`absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full z-10 ${
+                  isDark ? "bg-white/90 text-neutral-900 hover:bg-white" : "bg-neutral-900/90 text-white hover:bg-neutral-900"
+                } transition-colors shadow-lg`}
+                aria-label="Next project"
+              >
+                <ChevronRight size={24} />
+              </button>
+              <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full z-10 ${
+                isDark ? "bg-white/90 text-neutral-900" : "bg-neutral-900/90 text-white"
+              }`}>
+                {currentIndex + 1} / {projects.length}
+              </div>
+            </div>
+            <div className="overflow-hidden">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={`description-${currentIndex}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  className="space-y-6"
+                >
+                  <div>
+                    <span className={`${isDark ? "text-neutral-400" : "text-neutral-500"} uppercase tracking-wider`}>
+                      {currentProject.category}
+                    </span>
+                    <h2 className={`${isDark ? "text-white" : "text-neutral-900"} mt-3 mb-4`}>
+                      {currentProject.title}
+                    </h2>
+                  </div>
+                  <p className={`${isDark ? "text-neutral-300" : "text-neutral-600"} leading-relaxed`}>
+                    {currentProject.description}
+                  </p>
+                  <div className="flex gap-2 pt-4">
+                    {projects.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentIndex(index)}
+                        className={`h-2 rounded-full transition-all duration-200 ${
+                          index === currentIndex
+                            ? `w-8 ${isDark ? "bg-white" : "bg-neutral-900"}`
+                            : `w-2 ${isDark ? "bg-neutral-700" : "bg-neutral-300"}`
+                        }`}
+                        aria-label={`Go to project ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
+          </div>
+        </div>
+
+        {/* Zurich section — THIRD */}
         <div className={`mt-24 mb-8 pt-20 pb-8 border-t ${isDark ? "border-neutral-700" : "border-neutral-200"}`} style={{ marginTop: '6rem', paddingTop: '5rem' }}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="relative overflow-hidden">
@@ -408,6 +528,7 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
             </div>
           </div>
         </div>
+
       </div>
     </div>
   );
