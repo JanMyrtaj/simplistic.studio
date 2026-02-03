@@ -265,21 +265,21 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
         */}
 
         {/* Prishtina section — FIRST */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pb-20">
-          <div className="relative overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start pb-20">
+          <div className="relative overflow-hidden aspect-[4/3]">
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={`prishtina-image-${prishtinaIndex}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
-                className="relative"
+                transition={{ duration: 0.3, ease: "easeInOut" }}
+                className="absolute inset-0"
               >
                 <img
                   src={PRISHTINA_PROJECTS[prishtinaIndex].imageUrl}
                   alt={PRISHTINA_PROJECTS[prishtinaIndex].title}
-                  className="w-full h-auto object-cover"
+                  className="w-full h-full object-cover"
                   loading="lazy"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23ddd" width="800" height="600"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="20" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage not available%3C/text%3E%3C/svg%3E';
@@ -311,14 +311,14 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
               {prishtinaIndex + 1} / {PRISHTINA_PROJECTS.length}
             </div>
           </div>
-          <div className="overflow-hidden">
+          <div className="overflow-hidden min-h-[200px]">
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={`prishtina-description-${prishtinaIndex}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.2, ease: "easeOut" }}
+                transition={{ duration: 0.3, ease: "easeInOut" }}
                 className="space-y-6"
               >
                 <div>
@@ -329,7 +329,7 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                     {PRISHTINA_PROJECTS[prishtinaIndex].title}
                   </h2>
                 </div>
-                <p className={`${isDark ? "text-neutral-300" : "text-neutral-600"} leading-relaxed`}>
+                <p className={`${isDark ? "text-neutral-300" : "text-neutral-600"} leading-relaxed min-h-[48px]`}>
                   {PRISHTINA_PROJECTS[prishtinaIndex].description}
                 </p>
                 <div className="flex gap-2 pt-4">
@@ -353,21 +353,21 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
 
         {/* Gjakova section — SECOND */}
         <div className={`mt-24 mb-8 pt-20 pb-8 border-t ${isDark ? "border-neutral-700" : "border-neutral-200"}`} style={{ marginTop: '6rem', paddingTop: '5rem' }}>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="relative overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            <div className="relative overflow-hidden aspect-[4/3]">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={`image-${currentIndex}`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                  className="relative"
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="absolute inset-0"
                 >
                   <img
                     src={currentProject.imageUrl}
                     alt={currentProject.title}
-                    className="w-full h-auto object-cover"
+                    className="w-full h-full object-cover"
                     loading="lazy"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23ddd" width="800" height="600"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="20" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage not available%3C/text%3E%3C/svg%3E';
@@ -399,14 +399,14 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                 {currentIndex + 1} / {projects.length}
               </div>
             </div>
-            <div className="overflow-hidden">
+            <div className="overflow-hidden min-h-[200px]">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={`description-${currentIndex}`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
                   className="space-y-6"
                 >
                   <div>
@@ -417,7 +417,7 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                       {currentProject.title}
                     </h2>
                   </div>
-                  <p className={`${isDark ? "text-neutral-300" : "text-neutral-600"} leading-relaxed`}>
+                  <p className={`${isDark ? "text-neutral-300" : "text-neutral-600"} leading-relaxed min-h-[48px]`}>
                     {currentProject.description}
                   </p>
                   <div className="flex gap-2 pt-4">
@@ -442,21 +442,21 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
 
         {/* Zurich section — THIRD */}
         <div className={`mt-24 mb-8 pt-20 pb-8 border-t ${isDark ? "border-neutral-700" : "border-neutral-200"}`} style={{ marginTop: '6rem', paddingTop: '5rem' }}>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="relative overflow-hidden">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            <div className="relative overflow-hidden aspect-[4/3]">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={`zurich-image-${zurichIndex}`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
-                  className="relative"
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                  className="absolute inset-0"
                 >
                   <img
                     src={ZURICH_PROJECTS[zurichIndex].imageUrl}
                     alt={ZURICH_PROJECTS[zurichIndex].title}
-                    className="w-full h-auto object-cover"
+                    className="w-full h-full object-cover"
                     loading="lazy"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23ddd" width="800" height="600"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="20" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage not available%3C/text%3E%3C/svg%3E';
@@ -488,41 +488,41 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                 {zurichIndex + 1} / {ZURICH_PROJECTS.length}
               </div>
             </div>
-            <div className="overflow-hidden">
+            <div className="overflow-hidden min-h-[200px]">
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={`zurich-description-${zurichIndex}`}
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
                   className="space-y-6"
                 >
-              <div>
-                <span className={`${isDark ? "text-neutral-400" : "text-neutral-500"} uppercase tracking-wider`}>
-                  {ZURICH_PROJECTS[zurichIndex].category}
-                </span>
-                <h2 className={`${isDark ? "text-white" : "text-neutral-900"} mt-3 mb-4`}>
-                  {ZURICH_PROJECTS[zurichIndex].title}
-                </h2>
-              </div>
-              <p className={`${isDark ? "text-neutral-300" : "text-neutral-600"} leading-relaxed`}>
-                {ZURICH_PROJECTS[zurichIndex].description}
-              </p>
-              <div className="flex gap-2 pt-4">
-                {ZURICH_PROJECTS.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setZurichIndex(index)}
-                    className={`h-2 rounded-full transition-all duration-200 ${
-                      index === zurichIndex
-                        ? `w-8 ${isDark ? "bg-white" : "bg-neutral-900"}`
-                        : `w-2 ${isDark ? "bg-neutral-700" : "bg-neutral-300"}`
-                    }`}
-                    aria-label={`Go to project ${index + 1}`}
-                  />
-                ))}
-              </div>
+                  <div>
+                    <span className={`${isDark ? "text-neutral-400" : "text-neutral-500"} uppercase tracking-wider`}>
+                      {ZURICH_PROJECTS[zurichIndex].category}
+                    </span>
+                    <h2 className={`${isDark ? "text-white" : "text-neutral-900"} mt-3 mb-4`}>
+                      {ZURICH_PROJECTS[zurichIndex].title}
+                    </h2>
+                  </div>
+                  <p className={`${isDark ? "text-neutral-300" : "text-neutral-600"} leading-relaxed min-h-[48px]`}>
+                    {ZURICH_PROJECTS[zurichIndex].description}
+                  </p>
+                  <div className="flex gap-2 pt-4">
+                    {ZURICH_PROJECTS.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setZurichIndex(index)}
+                        className={`h-2 rounded-full transition-all duration-200 ${
+                          index === zurichIndex
+                            ? `w-8 ${isDark ? "bg-white" : "bg-neutral-900"}`
+                            : `w-2 ${isDark ? "bg-neutral-700" : "bg-neutral-300"}`
+                        }`}
+                        aria-label={`Go to project ${index + 1}`}
+                      />
+                    ))}
+                  </div>
                 </motion.div>
               </AnimatePresence>
             </div>
