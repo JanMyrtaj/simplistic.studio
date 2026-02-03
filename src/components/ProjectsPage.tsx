@@ -1,7 +1,7 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { projectId } from '../utils/supabase/info';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 // Gjakova, Kosovo
 import projectLivingKitchen from '../assets/gjakova/project-living-kitchen.png';
 import projectLivingRoom from '../assets/gjakova/project-living-room.png';
@@ -228,60 +228,65 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pb-20">
           {/* Image on the left with navigation arrows */}
-          <motion.div 
-            key={`image-${currentIndex}`}
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="relative"
-          >
-            <img
-              src={currentProject.imageUrl}
-              alt={currentProject.title}
-              className="w-full h-auto object-cover"
-              loading="lazy"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23ddd" width="800" height="600"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="20" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage not available%3C/text%3E%3C/svg%3E';
-              }}
-            />
-            
+          <div className="relative overflow-hidden">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={`image-${currentIndex}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className="relative"
+              >
+                <img
+                  src={currentProject.imageUrl}
+                  alt={currentProject.title}
+                  className="w-full h-auto object-cover"
+                  loading="lazy"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23ddd" width="800" height="600"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="20" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage not available%3C/text%3E%3C/svg%3E';
+                  }}
+                />
+              </motion.div>
+            </AnimatePresence>
+
             {/* Navigation Arrows */}
             <button
               onClick={prevProject}
               className={`absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full ${
                 isDark ? "bg-white/90 text-neutral-900 hover:bg-white" : "bg-neutral-900/90 text-white hover:bg-neutral-900"
-              } transition-colors shadow-lg`}
+              } transition-colors shadow-lg z-10`}
               aria-label="Previous project"
             >
               <ChevronLeft size={24} />
             </button>
-            
             <button
               onClick={nextProject}
               className={`absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full ${
                 isDark ? "bg-white/90 text-neutral-900 hover:bg-white" : "bg-neutral-900/90 text-white hover:bg-neutral-900"
-              } transition-colors shadow-lg`}
+              } transition-colors shadow-lg z-10`}
               aria-label="Next project"
             >
               <ChevronRight size={24} />
             </button>
-
-            {/* Image counter */}
-            <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full ${
+            <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full z-10 ${
               isDark ? "bg-white/90 text-neutral-900" : "bg-neutral-900/90 text-white"
             }`}>
               {currentIndex + 1} / {projects.length}
             </div>
-          </motion.div>
+          </div>
 
           {/* Description on the right */}
-          <motion.div 
-            key={`description-${currentIndex}`}
-            initial={{ opacity: 0, x: 50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="space-y-6"
-          >
+          <div className="overflow-hidden">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={`description-${currentIndex}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
+                className="space-y-6"
+              >
             <div>
               <span className={`${isDark ? "text-neutral-400" : "text-neutral-500"} uppercase tracking-wider`}>
                 {currentProject.category}
@@ -301,7 +306,7 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                 <button
                   key={index}
                   onClick={() => setCurrentIndex(index)}
-                  className={`h-2 rounded-full transition-all ${
+                  className={`h-2 rounded-full transition-all duration-200 ${
                     index === currentIndex
                       ? `w-8 ${isDark ? "bg-white" : "bg-neutral-900"}`
                       : `w-2 ${isDark ? "bg-neutral-700" : "bg-neutral-300"}`
@@ -310,31 +315,38 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                 />
               ))}
             </div>
-          </motion.div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
         </div>
 
         {/* Zurich section — same layout and animations as Gjakova */}
         <div className={`mt-24 mb-8 pt-20 pb-8 border-t ${isDark ? "border-neutral-700" : "border-neutral-200"}`} style={{ marginTop: '6rem', paddingTop: '5rem' }}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <motion.div
-              key={`zurich-image-${zurichIndex}`}
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="relative"
-            >
-              <img
-                src={ZURICH_PROJECTS[zurichIndex].imageUrl}
-                alt={ZURICH_PROJECTS[zurichIndex].title}
-                className="w-full h-auto object-cover"
-                loading="lazy"
-                onError={(e) => {
-                  (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23ddd" width="800" height="600"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="20" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage not available%3C/text%3E%3C/svg%3E';
-                }}
-              />
+            <div className="relative overflow-hidden">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={`zurich-image-${zurichIndex}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  className="relative"
+                >
+                  <img
+                    src={ZURICH_PROJECTS[zurichIndex].imageUrl}
+                    alt={ZURICH_PROJECTS[zurichIndex].title}
+                    className="w-full h-auto object-cover"
+                    loading="lazy"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23ddd" width="800" height="600"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="20" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage not available%3C/text%3E%3C/svg%3E';
+                    }}
+                  />
+                </motion.div>
+              </AnimatePresence>
               <button
                 onClick={prevZurich}
-                className={`absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full ${
+                className={`absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full z-10 ${
                   isDark ? "bg-white/90 text-neutral-900 hover:bg-white" : "bg-neutral-900/90 text-white hover:bg-neutral-900"
                 } transition-colors shadow-lg`}
                 aria-label="Previous project"
@@ -343,26 +355,29 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
               </button>
               <button
                 onClick={nextZurich}
-                className={`absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full ${
+                className={`absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full z-10 ${
                   isDark ? "bg-white/90 text-neutral-900 hover:bg-white" : "bg-neutral-900/90 text-white hover:bg-neutral-900"
                 } transition-colors shadow-lg`}
                 aria-label="Next project"
               >
                 <ChevronRight size={24} />
               </button>
-              <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full ${
+              <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full z-10 ${
                 isDark ? "bg-white/90 text-neutral-900" : "bg-neutral-900/90 text-white"
               }`}>
                 {zurichIndex + 1} / {ZURICH_PROJECTS.length}
               </div>
-            </motion.div>
-            <motion.div
-              key={`zurich-description-${zurichIndex}`}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="space-y-6"
-            >
+            </div>
+            <div className="overflow-hidden">
+              <AnimatePresence mode="wait" initial={false}>
+                <motion.div
+                  key={`zurich-description-${zurichIndex}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
+                  className="space-y-6"
+                >
               <div>
                 <span className={`${isDark ? "text-neutral-400" : "text-neutral-500"} uppercase tracking-wider`}>
                   {ZURICH_PROJECTS[zurichIndex].category}
@@ -379,7 +394,7 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                   <button
                     key={index}
                     onClick={() => setZurichIndex(index)}
-                    className={`h-2 rounded-full transition-all ${
+                    className={`h-2 rounded-full transition-all duration-200 ${
                       index === zurichIndex
                         ? `w-8 ${isDark ? "bg-white" : "bg-neutral-900"}`
                         : `w-2 ${isDark ? "bg-neutral-700" : "bg-neutral-300"}`
@@ -388,7 +403,9 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                   />
                 ))}
               </div>
-            </motion.div>
+                </motion.div>
+              </AnimatePresence>
+            </div>
           </div>
         </div>
       </div>
