@@ -2,6 +2,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { projectId } from '../utils/supabase/info';
 import { motion, AnimatePresence } from 'motion/react';
+import { Lightbox } from './ui/lightbox';
 import React from "react";
 
 // Gjakova, Kosovo
@@ -148,6 +149,8 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
   const [prishtinaIndex, setPrishtinaIndex] = useState(0);
   const [projects, setProjects] = useState<Project[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  type LightboxSection = 'prishtina' | 'gjakova' | 'zurich';
+  const [lightboxSection, setLightboxSection] = useState<LightboxSection | null>(null);
 
   useEffect(() => {
     fetchProjects();
@@ -264,7 +267,15 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
 
         {/* Prishtina section — FIRST */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pb-20">
-          <div className="relative w-full overflow-hidden rounded-lg bg-neutral-200/20" style={{ aspectRatio: '5/4', minHeight: 240 }}>
+          <div
+            className="relative w-full overflow-hidden rounded-lg bg-neutral-200/20 cursor-pointer"
+            style={{ aspectRatio: '5/4', minHeight: 240 }}
+            onClick={() => setLightboxSection('prishtina')}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === 'Enter' && setLightboxSection('prishtina')}
+            aria-label="View fullscreen"
+          >
             <AnimatePresence mode="wait" initial={false}>
               <motion.div
                 key={`prishtina-image-${prishtinaIndex}`}
@@ -286,7 +297,8 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
               </motion.div>
             </AnimatePresence>
             <button
-              onClick={prevPrishtina}
+              type="button"
+              onClick={(e) => { e.stopPropagation(); prevPrishtina(); }}
               className={`absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full z-10 ${
                 isDark ? "bg-white/90 text-neutral-900 hover:bg-white" : "bg-neutral-900/90 text-white hover:bg-neutral-900"
               } transition-colors shadow-lg`}
@@ -295,7 +307,8 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
               <ChevronLeft size={24} />
             </button>
             <button
-              onClick={nextPrishtina}
+              type="button"
+              onClick={(e) => { e.stopPropagation(); nextPrishtina(); }}
               className={`absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full z-10 ${
                 isDark ? "bg-white/90 text-neutral-900 hover:bg-white" : "bg-neutral-900/90 text-white hover:bg-neutral-900"
               } transition-colors shadow-lg`}
@@ -352,7 +365,15 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
         {/* Gjakova section — SECOND */}
         <div className={`mt-24 mb-8 pt-20 pb-8 border-t ${isDark ? "border-neutral-700" : "border-neutral-200"}`} style={{ marginTop: '6rem', paddingTop: '5rem' }}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="relative w-full overflow-hidden rounded-lg bg-neutral-200/20" style={{ aspectRatio: '5/4', minHeight: 240 }}>
+            <div
+              className="relative w-full overflow-hidden rounded-lg bg-neutral-200/20 cursor-pointer"
+              style={{ aspectRatio: '5/4', minHeight: 240 }}
+              onClick={() => setLightboxSection('gjakova')}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === 'Enter' && setLightboxSection('gjakova')}
+              aria-label="View fullscreen"
+            >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={`image-${currentIndex}`}
@@ -374,7 +395,8 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                 </motion.div>
               </AnimatePresence>
               <button
-                onClick={prevProject}
+                type="button"
+                onClick={(e) => { e.stopPropagation(); prevProject(); }}
                 className={`absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full z-10 ${
                   isDark ? "bg-white/90 text-neutral-900 hover:bg-white" : "bg-neutral-900/90 text-white hover:bg-neutral-900"
                 } transition-colors shadow-lg`}
@@ -383,7 +405,8 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                 <ChevronLeft size={24} />
               </button>
               <button
-                onClick={nextProject}
+                type="button"
+                onClick={(e) => { e.stopPropagation(); nextProject(); }}
                 className={`absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full z-10 ${
                   isDark ? "bg-white/90 text-neutral-900 hover:bg-white" : "bg-neutral-900/90 text-white hover:bg-neutral-900"
                 } transition-colors shadow-lg`}
@@ -441,7 +464,15 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
         {/* Zurich section — THIRD */}
         <div className={`mt-24 mb-8 pt-20 pb-8 border-t ${isDark ? "border-neutral-700" : "border-neutral-200"}`} style={{ marginTop: '6rem', paddingTop: '5rem' }}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            <div className="relative w-full overflow-hidden rounded-lg bg-neutral-200/20" style={{ aspectRatio: '5/4', minHeight: 240 }}>
+            <div
+              className="relative w-full overflow-hidden rounded-lg bg-neutral-200/20 cursor-pointer"
+              style={{ aspectRatio: '5/4', minHeight: 240 }}
+              onClick={() => setLightboxSection('zurich')}
+              role="button"
+              tabIndex={0}
+              onKeyDown={(e) => e.key === 'Enter' && setLightboxSection('zurich')}
+              aria-label="View fullscreen"
+            >
               <AnimatePresence mode="wait" initial={false}>
                 <motion.div
                   key={`zurich-image-${zurichIndex}`}
@@ -463,7 +494,8 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                 </motion.div>
               </AnimatePresence>
               <button
-                onClick={prevZurich}
+                type="button"
+                onClick={(e) => { e.stopPropagation(); prevZurich(); }}
                 className={`absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full z-10 ${
                   isDark ? "bg-white/90 text-neutral-900 hover:bg-white" : "bg-neutral-900/90 text-white hover:bg-neutral-900"
                 } transition-colors shadow-lg`}
@@ -472,7 +504,8 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                 <ChevronLeft size={24} />
               </button>
               <button
-                onClick={nextZurich}
+                type="button"
+                onClick={(e) => { e.stopPropagation(); nextZurich(); }}
                 className={`absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full z-10 ${
                   isDark ? "bg-white/90 text-neutral-900 hover:bg-white" : "bg-neutral-900/90 text-white hover:bg-neutral-900"
                 } transition-colors shadow-lg`}
@@ -526,6 +559,25 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
             </div>
           </div>
         </div>
+
+        {lightboxSection && (() => {
+          const list = lightboxSection === 'prishtina' ? PRISHTINA_PROJECTS : lightboxSection === 'zurich' ? ZURICH_PROJECTS : projects;
+          const idx = lightboxSection === 'prishtina' ? prishtinaIndex : lightboxSection === 'zurich' ? zurichIndex : currentIndex;
+          const prev = lightboxSection === 'prishtina' ? prevPrishtina : lightboxSection === 'zurich' ? prevZurich : prevProject;
+          const next = lightboxSection === 'prishtina' ? nextPrishtina : lightboxSection === 'zurich' ? nextZurich : nextProject;
+          const project = list[idx];
+          if (!project) return null;
+          return (
+            <Lightbox
+              isOpen={true}
+              onClose={() => setLightboxSection(null)}
+              imageUrl={project.imageUrl}
+              imageAlt={project.title}
+              onPrev={prev}
+              onNext={next}
+            />
+          );
+        })()}
 
       </div>
     </div>
