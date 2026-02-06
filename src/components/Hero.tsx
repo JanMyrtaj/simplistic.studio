@@ -14,10 +14,26 @@ export function Hero({ isDark }: HeroProps) {
   };
 
   return (
-    <section id="hero" className={`min-h-screen flex items-center justify-center ${
-      isDark ? "bg-neutral-800" : "bg-neutral-100"
-    } pt-20`}>
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center">
+    <section 
+      id="hero" 
+      className={`min-h-screen flex items-center justify-center pt-20 relative ${
+        isDark ? "bg-neutral-900" : "bg-neutral-100"
+      }`}
+      style={{
+        backgroundImage: isDark 
+          ? 'url(/backgrounds/background-dark.png)' 
+          : 'url(/backgrounds/background-light.png)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+      {/* Overlay for text readability */}
+      <div className={`absolute inset-0 ${
+        isDark ? "bg-neutral-900/60" : "bg-neutral-100/60"
+      }`}></div>
+      
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center relative z-10">
         <motion.h1 
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}

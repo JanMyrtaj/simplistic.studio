@@ -197,7 +197,7 @@ export function Contact({ isDark }: ContactProps) {
                   <Mail className={`${isDark ? "text-white" : "text-neutral-900"} mt-1`} size={20} />
                   <div>
                     <p className={`${isDark ? "text-white" : "text-neutral-900"} mb-1`}>Email</p>
-                    <p className={isDark ? "text-neutral-300" : "text-neutral-600"}>simplistic.architecture@gmail.com</p>
+                    <p className={isDark ? "text-neutral-300" : "text-neutral-600"}>info@simplistic-architecture.com</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-4">

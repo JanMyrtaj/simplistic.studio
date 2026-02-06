@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
@@ -19,6 +19,15 @@ export function Lightbox({
   onNext,
   onPrev,
 }: LightboxProps) {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  useEffect(() => {
+    if (!imageUrl) return;
+    setImageLoaded(false);
+    const img = new Image();
+    img.src = imageUrl;
+  }, [imageUrl]);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -59,14 +68,25 @@ export function Lightbox({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.96 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="relative w-full max-w-2xl max-h-[50vh] flex items-center justify-center"
+            className="relative w-full max-w-2xl max-h-[50vh] flex items-center justify-center min-h-[200px]"
             style={{ zIndex: 0 }}
             onClick={(e) => e.stopPropagation()}
           >
+            {!imageLoaded && (
+              <div className="absolute inset-0 flex items-center justify-center rounded-lg bg-white/5">
+                <div className="w-10 h-10 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+              </div>
+            )}
             <img
               src={imageUrl}
               alt={imageAlt}
-              className="max-w-full max-h-[50vh] w-auto h-auto object-contain rounded-lg shadow-2xl"
+              decoding="async"
+              fetchPriority="high"
+              onLoad={() => setImageLoaded(true)}
+              onError={() => setImageLoaded(true)}
+              className={`max-w-full max-h-[50vh] w-auto h-auto object-contain rounded-lg shadow-2xl transition-opacity duration-200 ${
+                imageLoaded ? "opacity-100" : "opacity-0"
+              }`}
             />
           </motion.div>
 

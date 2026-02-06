@@ -246,6 +246,16 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
 
   const currentProject = projects[currentIndex];
 
+  const preloadImage = (url: string) => {
+    if (!url || typeof url !== 'string') return;
+    const img = new Image();
+    img.src = url;
+  };
+
+  const preloadSectionImages = (urls: string[]) => {
+    urls.forEach((url) => preloadImage(url));
+  };
+
   return (
     <div className={`min-h-screen ${isDark ? "bg-neutral-900" : "bg-white"} pt-20`}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-24">
@@ -271,6 +281,10 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
             className="relative w-full overflow-hidden rounded-lg bg-neutral-200/20 cursor-pointer"
             style={{ aspectRatio: '5/4', minHeight: 240 }}
             onClick={() => setLightboxSection('prishtina')}
+            onMouseEnter={() => preloadSectionImages([
+              PRISHTINA_PROJECTS[prishtinaIndex].imageUrl,
+              PRISHTINA_PROJECTS[(prishtinaIndex + 1) % PRISHTINA_PROJECTS.length].imageUrl,
+            ])}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => e.key === 'Enter' && setLightboxSection('prishtina')}
@@ -369,6 +383,10 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
               className="relative w-full overflow-hidden rounded-lg bg-neutral-200/20 cursor-pointer"
               style={{ aspectRatio: '5/4', minHeight: 240 }}
               onClick={() => setLightboxSection('gjakova')}
+              onMouseEnter={() => preloadSectionImages([
+                projects[currentIndex]?.imageUrl,
+                projects[(currentIndex + 1) % projects.length]?.imageUrl,
+              ].filter(Boolean) as string[])}
               role="button"
               tabIndex={0}
               onKeyDown={(e) => e.key === 'Enter' && setLightboxSection('gjakova')}
@@ -468,6 +486,10 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
               className="relative w-full overflow-hidden rounded-lg bg-neutral-200/20 cursor-pointer"
               style={{ aspectRatio: '5/4', minHeight: 240 }}
               onClick={() => setLightboxSection('zurich')}
+              onMouseEnter={() => preloadSectionImages([
+                ZURICH_PROJECTS[zurichIndex].imageUrl,
+                ZURICH_PROJECTS[(zurichIndex + 1) % ZURICH_PROJECTS.length].imageUrl,
+              ])}
               role="button"
               tabIndex={0}
               onKeyDown={(e) => e.key === 'Enter' && setLightboxSection('zurich')}
