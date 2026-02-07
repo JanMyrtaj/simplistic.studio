@@ -10,10 +10,10 @@ import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 
 function getInitialTheme(): boolean {
-  if (typeof window === "undefined") return true;
+  if (typeof window === "undefined") return false;
   const saved = localStorage.getItem("theme");
-  if (saved === "dark" || saved === "light") return saved === "dark";
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  if (saved === "dark") return true;
+  return false; // default: always open in light mode
 }
 
 function MainApp() {
@@ -30,14 +30,7 @@ function MainApp() {
     }
   }, []);
 
-  useEffect(() => {
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const handleChange = () => {
-      if (!localStorage.getItem("theme")) setIsDark(media.matches);
-    };
-    media.addEventListener("change", handleChange);
-    return () => media.removeEventListener("change", handleChange);
-  }, []);
+  // Default is light mode; no system preference sync so the page always opens light
 
   const toggleTheme = () => {
     localStorage.setItem("theme", isDark ? "light" : "dark");
