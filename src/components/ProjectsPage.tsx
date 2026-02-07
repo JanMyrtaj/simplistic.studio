@@ -39,8 +39,6 @@ import image00030 from '../assets/gjakova/image00030.jpeg';
 import image00031 from '../assets/gjakova/image00031.jpeg';
 import image00032 from '../assets/gjakova/image00032.jpeg';
 // Zurich, Switzerland
-import projectKitchen from '../assets/zurich/project-kitchen.png';
-import projectBathroom from '../assets/zurich/project-bathroom.png';
 import image00064 from '../assets/zurich/image00064.jpeg';
 import image00065 from '../assets/zurich/image00065.jpeg';
 import image00066 from '../assets/zurich/image00066.jpeg';
@@ -110,8 +108,6 @@ const DEFAULT_PROJECTS: Project[] = [
 ];
 
 const ZURICH_PROJECTS: Project[] = [
-  { id: 'zurich-2', title: 'Contemporary Kitchen', description: 'Kitchen with marble island and bar stools, marble backsplash, dark wood paneling, and pendant lights.', imageUrl: projectKitchen, category: 'Zurich, Switzerland', createdAt: new Date().toISOString() },
-  { id: 'zurich-3', title: 'Minimalist Bathroom', description: 'Bathroom with wall-mounted toilet, integrated strip lighting, towel bars, and recessed shelving with rolled towels.', imageUrl: projectBathroom, category: 'Zurich, Switzerland', createdAt: new Date().toISOString() },
   { id: 'zurich-4', title: 'Entry with Slatted Wall', description: 'Entry with slatted accent wall, dark floating shelf with vase and lamp, and taupe storage unit with base lighting.', imageUrl: image00064, category: 'Zurich, Switzerland', createdAt: new Date().toISOString() },
   { id: 'zurich-5', title: 'Marble Island Kitchen', description: 'Kitchen with marble island and bar stools, marble backsplash, dark wood walls, and black pendant lights.', imageUrl: image00065, category: 'Zurich, Switzerland', createdAt: new Date().toISOString() },
   { id: 'zurich-6', title: 'Stone Bathroom', description: 'Bathroom with stone tiling, wall-mounted toilet, vertical strip lighting, towel rails, and built-in shelving.', imageUrl: image00066, category: 'Zurich, Switzerland', createdAt: new Date().toISOString() },
@@ -246,16 +242,6 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
 
   const currentProject = projects[currentIndex];
 
-  const preloadImage = (url: string) => {
-    if (!url || typeof url !== 'string') return;
-    const img = new Image();
-    img.src = url;
-  };
-
-  const preloadSectionImages = (urls: string[]) => {
-    urls.forEach((url) => preloadImage(url));
-  };
-
   return (
     <div className={`min-h-screen ${isDark ? "bg-neutral-900" : "bg-white"} pt-20`}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-24">
@@ -281,10 +267,6 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
             className="relative w-full overflow-hidden rounded-lg bg-neutral-200/20 cursor-pointer"
             style={{ aspectRatio: '5/4', minHeight: 240 }}
             onClick={() => setLightboxSection('prishtina')}
-            onMouseEnter={() => preloadSectionImages([
-              PRISHTINA_PROJECTS[prishtinaIndex].imageUrl,
-              PRISHTINA_PROJECTS[(prishtinaIndex + 1) % PRISHTINA_PROJECTS.length].imageUrl,
-            ])}
             role="button"
             tabIndex={0}
             onKeyDown={(e) => e.key === 'Enter' && setLightboxSection('prishtina')}
@@ -303,7 +285,6 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                   src={PRISHTINA_PROJECTS[prishtinaIndex].imageUrl}
                   alt={PRISHTINA_PROJECTS[prishtinaIndex].title}
                   className="block w-full h-full object-cover"
-                  loading="lazy"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23ddd" width="800" height="600"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="20" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage not available%3C/text%3E%3C/svg%3E';
                   }}
@@ -383,10 +364,6 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
               className="relative w-full overflow-hidden rounded-lg bg-neutral-200/20 cursor-pointer"
               style={{ aspectRatio: '5/4', minHeight: 240 }}
               onClick={() => setLightboxSection('gjakova')}
-              onMouseEnter={() => preloadSectionImages([
-                projects[currentIndex]?.imageUrl,
-                projects[(currentIndex + 1) % projects.length]?.imageUrl,
-              ].filter(Boolean) as string[])}
               role="button"
               tabIndex={0}
               onKeyDown={(e) => e.key === 'Enter' && setLightboxSection('gjakova')}
@@ -405,7 +382,6 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                     src={currentProject.imageUrl}
                     alt={currentProject.title}
                     className="block w-full h-full object-cover"
-                    loading="lazy"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23ddd" width="800" height="600"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="20" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage not available%3C/text%3E%3C/svg%3E';
                     }}
@@ -486,10 +462,6 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
               className="relative w-full overflow-hidden rounded-lg bg-neutral-200/20 cursor-pointer"
               style={{ aspectRatio: '5/4', minHeight: 240 }}
               onClick={() => setLightboxSection('zurich')}
-              onMouseEnter={() => preloadSectionImages([
-                ZURICH_PROJECTS[zurichIndex].imageUrl,
-                ZURICH_PROJECTS[(zurichIndex + 1) % ZURICH_PROJECTS.length].imageUrl,
-              ])}
               role="button"
               tabIndex={0}
               onKeyDown={(e) => e.key === 'Enter' && setLightboxSection('zurich')}
@@ -508,7 +480,6 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                     src={ZURICH_PROJECTS[zurichIndex].imageUrl}
                     alt={ZURICH_PROJECTS[zurichIndex].title}
                     className="block w-full h-full object-cover"
-                    loading="lazy"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23ddd" width="800" height="600"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="20" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage not available%3C/text%3E%3C/svg%3E';
                     }}
