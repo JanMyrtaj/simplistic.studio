@@ -139,6 +139,15 @@ interface ProjectsPageProps {
   isDark: boolean;
 }
 
+const preloadImages = (urls: string[]) => {
+  if (typeof window === 'undefined') return;
+  urls.forEach((url) => {
+    if (!url) return;
+    const img = new Image();
+    img.src = url;
+  });
+};
+
 export function ProjectsPage({ isDark }: ProjectsPageProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [zurichIndex, setZurichIndex] = useState(0);
@@ -151,6 +160,23 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
   useEffect(() => {
     fetchProjects();
   }, []);
+
+  useEffect(() => {
+    // Preload all static project images so switching feels instant
+    const staticUrls = [
+      ...PRISHTINA_PROJECTS,
+      ...ZURICH_PROJECTS,
+      ...DEFAULT_PROJECTS,
+    ].map((p) => p.imageUrl);
+    preloadImages(staticUrls);
+  }, []);
+
+  useEffect(() => {
+    // Preload any projects returned from the server (including defaults)
+    if (projects.length > 0) {
+      preloadImages(projects.map((p) => p.imageUrl));
+    }
+  }, [projects]);
 
   const fetchProjects = async () => {
     try {
