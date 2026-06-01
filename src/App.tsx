@@ -8,6 +8,7 @@ import { ProjectsPage } from "./components/ProjectsPage";
 import { ScrollToTop } from "./components/ScrollToTop";
 import { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 function getInitialTheme(): boolean {
   if (typeof window === "undefined") return false;
@@ -72,6 +73,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <MainApp />
+      <SpeedInsights />
     </BrowserRouter>
   );
 }
