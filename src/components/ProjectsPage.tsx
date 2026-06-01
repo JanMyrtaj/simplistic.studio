@@ -148,6 +148,33 @@ const preloadImages = (urls: string[]) => {
   });
 };
 
+const loadImage = (url: string): Promise<void> =>
+  new Promise((resolve) => {
+    if (!url) {
+      resolve();
+      return;
+    }
+    const img = new Image();
+    img.onload = () => resolve();
+    img.onerror = () => resolve();
+    img.src = url;
+  });
+
+const getCriticalImageUrls = (gjakovaProjects: Project[]) => {
+  const urls = new Set<string>();
+  [PRISHTINA_PROJECTS, ZURICH_PROJECTS, gjakovaProjects].forEach((items) => {
+    if (items.length === 0) return;
+    const indices = [0, 1, items.length - 1];
+    indices.forEach((i) => {
+      if (items[i]?.imageUrl) urls.add(items[i].imageUrl);
+    });
+  });
+  return [...urls];
+};
+
+const MIN_LOADING_MS = 2000;
+const MAX_LOADING_MS = 12000;
+
 const preloadAdjacent = (items: Project[], index: number) => {
   if (items.length === 0) return;
   const indices = [
@@ -163,11 +190,39 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
   const [zurichIndex, setZurichIndex] = useState(0);
   const [prishtinaIndex, setPrishtinaIndex] = useState(0);
   const [projects, setProjects] = useState<Project[]>(DEFAULT_PROJECTS);
+  const [isPageReady, setIsPageReady] = useState(false);
   type LightboxSection = 'prishtina' | 'gjakova' | 'zurich';
   const [lightboxSection, setLightboxSection] = useState<LightboxSection | null>(null);
 
   useEffect(() => {
-    fetchProjects();
+    let cancelled = false;
+    const start = Date.now();
+
+    const preparePage = async () => {
+      const projectList = await fetchProjects();
+      if (cancelled) return;
+
+      setProjects(projectList);
+      await Promise.all(getCriticalImageUrls(projectList).map((url) => loadImage(url)));
+
+      const remaining = MIN_LOADING_MS - (Date.now() - start);
+      if (remaining > 0) {
+        await new Promise((resolve) => setTimeout(resolve, remaining));
+      }
+
+      if (!cancelled) setIsPageReady(true);
+    };
+
+    preparePage();
+
+    const timeout = setTimeout(() => {
+      if (!cancelled) setIsPageReady(true);
+    }, MAX_LOADING_MS);
+
+    return () => {
+      cancelled = true;
+      clearTimeout(timeout);
+    };
   }, []);
 
   useEffect(() => {
@@ -182,7 +237,7 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
     preloadAdjacent(ZURICH_PROJECTS, zurichIndex);
   }, [zurichIndex]);
 
-  const fetchProjects = async () => {
+  const fetchProjects = async (): Promise<Project[]> => {
     try {
       const serverUrl = `https://${projectId}.supabase.co/functions/v1/make-server-548e39aa`;
       const response = await fetch(`${serverUrl}/projects`, {
@@ -195,7 +250,6 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
       if (response.ok) {
         const data = await response.json();
         if (data.projects && Array.isArray(data.projects) && data.projects.length > 0) {
-          // Validate project structure
           const validProjects = data.projects.filter((p: Project) => 
             p && 
             typeof p.id === 'string' && 
@@ -203,15 +257,13 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
             typeof p.imageUrl === 'string' &&
             typeof p.description === 'string'
           );
-          setProjects(validProjects.length > 0 ? validProjects : DEFAULT_PROJECTS);
-        } else {
-          setProjects(DEFAULT_PROJECTS);
+          return validProjects.length > 0 ? validProjects : DEFAULT_PROJECTS;
         }
-      } else {
-        setProjects(DEFAULT_PROJECTS);
+        return DEFAULT_PROJECTS;
       }
+      return DEFAULT_PROJECTS;
     } catch (err) {
-      setProjects(DEFAULT_PROJECTS);
+      return DEFAULT_PROJECTS;
     }
   };
 
@@ -242,6 +294,14 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
   const prevPrishtina = () => {
     setPrishtinaIndex((prev) => (prev - 1 + PRISHTINA_PROJECTS.length) % PRISHTINA_PROJECTS.length);
   };
+
+  if (!isPageReady) {
+    return (
+      <div className={`min-h-screen ${isDark ? "bg-neutral-900" : "bg-white"} pt-20 flex items-center justify-center`}>
+        <div className={`${isDark ? "text-white" : "text-neutral-900"}`}>Loading projects...</div>
+      </div>
+    );
+  }
 
   if (projects.length === 0) {
     return (
@@ -405,17 +465,17 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                     src={currentProject.imageUrl}
                     alt={currentProject.title}
                     className="block w-full h-full object-cover"
-                    loading="lazy"
+                    loading="eager"
                     decoding="async"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23ddd" width="800" height="600"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="20" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage not available%3C/text%3E%3C/svg%3E';
-                    }}
-                  />
-                </motion.div>
-              </AnimatePresence>
-              <button
-                type="button"
-                onClick={(e) => { e.stopPropagation(); prevProject(); }}
+                    (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23ddd" width="800" height="600"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="20" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage not available%3C/text%3E%3C/svg%3E';
+                  }}
+                />
+              </motion.div>
+            </AnimatePresence>
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); prevProject(); }}
                 className={`absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full z-10 ${
                   isDark ? "bg-white/90 text-neutral-900 hover:bg-white" : "bg-neutral-900/90 text-white hover:bg-neutral-900"
                 } transition-colors shadow-lg`}
@@ -505,7 +565,7 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                     src={ZURICH_PROJECTS[zurichIndex].imageUrl}
                     alt={ZURICH_PROJECTS[zurichIndex].title}
                     className="block w-full h-full object-cover"
-                    loading="lazy"
+                    loading="eager"
                     decoding="async"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23ddd" width="800" height="600"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="20" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage not available%3C/text%3E%3C/svg%3E';
