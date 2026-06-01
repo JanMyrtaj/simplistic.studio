@@ -1,0 +1,26 @@
+name: Supabase Ping
+
+on:
+  schedule:
+    # Run every 6 hours (0:00, 6:00, 12:00, 18:00 UTC)
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+jobs:
+  ping-supabase:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase Project
+        run: |
+          curl -X GET \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_API_KEY }}" \
+            -H "Content-Type: application/json" \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/" \
+            -v
+      
+      - name: Log Success
+        run: echo "✅ Supabase project pinged successfully at $(date)"
+      
+      - name: Notify on Failure
+        if: failure()
+        run: echo "❌ Failed to ping Supabase project"
