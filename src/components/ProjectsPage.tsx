@@ -148,12 +148,21 @@ const preloadImages = (urls: string[]) => {
   });
 };
 
+const preloadAdjacent = (items: Project[], index: number) => {
+  if (items.length === 0) return;
+  const indices = [
+    index,
+    (index + 1) % items.length,
+    (index - 1 + items.length) % items.length,
+  ];
+  preloadImages([...new Set(indices.map((i) => items[i]?.imageUrl).filter(Boolean))]);
+};
+
 export function ProjectsPage({ isDark }: ProjectsPageProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [zurichIndex, setZurichIndex] = useState(0);
   const [prishtinaIndex, setPrishtinaIndex] = useState(0);
-  const [projects, setProjects] = useState<Project[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [projects, setProjects] = useState<Project[]>(DEFAULT_PROJECTS);
   type LightboxSection = 'prishtina' | 'gjakova' | 'zurich';
   const [lightboxSection, setLightboxSection] = useState<LightboxSection | null>(null);
 
@@ -162,21 +171,16 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
   }, []);
 
   useEffect(() => {
-    // Preload all static project images so switching feels instant
-    const staticUrls = [
-      ...PRISHTINA_PROJECTS,
-      ...ZURICH_PROJECTS,
-      ...DEFAULT_PROJECTS,
-    ].map((p) => p.imageUrl);
-    preloadImages(staticUrls);
-  }, []);
+    preloadAdjacent(PRISHTINA_PROJECTS, prishtinaIndex);
+  }, [prishtinaIndex]);
 
   useEffect(() => {
-    // Preload any projects returned from the server (including defaults)
-    if (projects.length > 0) {
-      preloadImages(projects.map((p) => p.imageUrl));
-    }
-  }, [projects]);
+    preloadAdjacent(projects, currentIndex);
+  }, [currentIndex, projects]);
+
+  useEffect(() => {
+    preloadAdjacent(ZURICH_PROJECTS, zurichIndex);
+  }, [zurichIndex]);
 
   const fetchProjects = async () => {
     try {
@@ -208,8 +212,6 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
       }
     } catch (err) {
       setProjects(DEFAULT_PROJECTS);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -240,14 +242,6 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
   const prevPrishtina = () => {
     setPrishtinaIndex((prev) => (prev - 1 + PRISHTINA_PROJECTS.length) % PRISHTINA_PROJECTS.length);
   };
-
-  if (isLoading) {
-    return (
-      <div className={`min-h-screen ${isDark ? "bg-neutral-900" : "bg-white"} pt-20 flex items-center justify-center`}>
-        <div className={`${isDark ? "text-white" : "text-neutral-900"}`}>Loading projects...</div>
-      </div>
-    );
-  }
 
   if (projects.length === 0) {
     return (
@@ -311,6 +305,9 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                   src={PRISHTINA_PROJECTS[prishtinaIndex].imageUrl}
                   alt={PRISHTINA_PROJECTS[prishtinaIndex].title}
                   className="block w-full h-full object-cover"
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
                   onError={(e) => {
                     (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23ddd" width="800" height="600"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="20" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage not available%3C/text%3E%3C/svg%3E';
                   }}
@@ -408,6 +405,8 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                     src={currentProject.imageUrl}
                     alt={currentProject.title}
                     className="block w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23ddd" width="800" height="600"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="20" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage not available%3C/text%3E%3C/svg%3E';
                     }}
@@ -506,6 +505,8 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
                     src={ZURICH_PROJECTS[zurichIndex].imageUrl}
                     alt={ZURICH_PROJECTS[zurichIndex].title}
                     className="block w-full h-full object-cover"
+                    loading="lazy"
+                    decoding="async"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23ddd" width="800" height="600"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="20" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage not available%3C/text%3E%3C/svg%3E';
                     }}
