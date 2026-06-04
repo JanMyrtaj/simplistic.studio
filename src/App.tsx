@@ -5,35 +5,35 @@ import { Services } from "./components/Services";
 import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
 import { ProjectsPage } from "./components/ProjectsPage";
-import { ScrollToTop } from "./components/ScrollToTop";
-import { useState, useEffect } from "react";
+import { IntroSplash } from "./components/IntroSplash";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 
-function getInitialTheme(): boolean {
-  if (typeof window === "undefined") return false;
-  const saved = localStorage.getItem("theme");
-  if (saved === "dark") return true;
-  return false; // default: always open in light mode
-}
-
 function MainApp() {
-  const [isDark, setIsDark] = useState(getInitialTheme);
+  const [isDark, setIsDark] = useState(false);
+  const [showIntro, setShowIntro] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
-  
-  const currentPage = location.pathname === '/projects' ? 'projects' : 'home';
+
+  const currentPage = location.pathname === "/projects" ? "projects" : "home";
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     if (savedTheme) {
       setIsDark(savedTheme === "dark");
     }
+
+    const hasSeenIntro = sessionStorage.getItem("hasSeenIntro");
+    if (hasSeenIntro) {
+      setShowIntro(false);
+    }
   }, []);
 
-  // Default is light mode; no system preference sync so the page always opens light
+  useEffect(() => {
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+  }, [isDark]);
 
   const toggleTheme = () => {
-    localStorage.setItem("theme", isDark ? "light" : "dark");
     setIsDark(!isDark);
   };
 
@@ -46,24 +46,35 @@ function MainApp() {
     window.scrollTo(0, 0);
   };
 
+  const handleIntroComplete = () => {
+    setShowIntro(false);
+    sessionStorage.setItem("hasSeenIntro", "true");
+  };
+
+  if (showIntro) {
+    return <IntroSplash onComplete={handleIntroComplete} isDark={isDark} />;
+  }
+
   return (
     <div className={`min-h-screen ${isDark ? "bg-neutral-900" : "bg-neutral-50"}`}>
       <Header isDark={isDark} toggleTheme={toggleTheme} currentPage={currentPage} navigateTo={navigateTo} />
-      
+
       <Routes>
-        <Route path="/" element={
-          <>
-            <Hero isDark={isDark} />
-            <About isDark={isDark} />
-            <Services isDark={isDark} />
-            <Contact isDark={isDark} />
-          </>
-        } />
+        <Route
+          path="/"
+          element={
+            <>
+              <Hero isDark={isDark} />
+              <About isDark={isDark} />
+              <Services isDark={isDark} />
+              <Contact isDark={isDark} />
+            </>
+          }
+        />
         <Route path="/projects" element={<ProjectsPage isDark={isDark} />} />
       </Routes>
-      
+
       <Footer isDark={isDark} navigateTo={navigateTo} />
-      <ScrollToTop isDark={isDark} />
     </div>
   );
 }
