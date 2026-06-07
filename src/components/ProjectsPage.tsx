@@ -202,9 +202,6 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
       setProjects(projectList);
       await Promise.all(getProjectImageUrls(projectList).map((url) => loadImage(url)));
 
-      // Ensure loading screen shows for at least 3 seconds
-      await new Promise(resolve => setTimeout(resolve, 3000));
-
       if (!cancelled) setIsPageReady(true);
     };
 
