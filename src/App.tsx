@@ -8,6 +8,7 @@ import { ProjectsPage } from "./components/ProjectsPage";
 import { IntroSplash } from "./components/IntroSplash";
 import React, { useState, useEffect } from "react";
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
+import { SpeedInsights } from "@vercel/speed-insights/react";
 
 function MainApp() {
   const [isDark, setIsDark] = useState(false);
@@ -83,6 +84,7 @@ export default function App() {
   return (
     <BrowserRouter>
       <MainApp />
+      <SpeedInsights />
     </BrowserRouter>
   );
 }
