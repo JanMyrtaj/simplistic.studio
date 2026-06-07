@@ -2,6 +2,7 @@ import { Mail, Phone, MapPin } from "lucide-react";
 import { useState } from "react";
 import { motion } from 'motion/react';
 import { projectId } from '../utils/supabase/info';
+import React from "react";
 
 interface ContactProps {
   isDark: boolean;

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { projectId } from '../utils/supabase/info';
 import { motion, AnimatePresence } from 'motion/react';
 import { Lightbox } from './ui/lightbox';
+import { PageLoader } from './ProjectsLoading';
 import React from "react";
 
 // Gjakova, Kosovo
@@ -160,20 +161,17 @@ const loadImage = (url: string): Promise<void> =>
     img.src = url;
   });
 
-const getCriticalImageUrls = (gjakovaProjects: Project[]) => {
+const getProjectImageUrls = (gjakovaProjects: Project[]) => {
   const urls = new Set<string>();
   [PRISHTINA_PROJECTS, ZURICH_PROJECTS, gjakovaProjects].forEach((items) => {
-    if (items.length === 0) return;
-    const indices = [0, 1, items.length - 1];
-    indices.forEach((i) => {
-      if (items[i]?.imageUrl) urls.add(items[i].imageUrl);
+    items.forEach((item) => {
+      if (item.imageUrl) urls.add(item.imageUrl);
     });
   });
   return [...urls];
 };
 
-const MIN_LOADING_MS = 2000;
-const MAX_LOADING_MS = 12000;
+const PROJECT_FETCH_TIMEOUT_MS = 10000;
 
 const preloadAdjacent = (items: Project[], index: number) => {
   if (items.length === 0) return;
@@ -196,32 +194,24 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
 
   useEffect(() => {
     let cancelled = false;
-    const start = Date.now();
 
     const preparePage = async () => {
       const projectList = await fetchProjects();
       if (cancelled) return;
 
       setProjects(projectList);
-      await Promise.all(getCriticalImageUrls(projectList).map((url) => loadImage(url)));
+      await Promise.all(getProjectImageUrls(projectList).map((url) => loadImage(url)));
 
-      const remaining = MIN_LOADING_MS - (Date.now() - start);
-      if (remaining > 0) {
-        await new Promise((resolve) => setTimeout(resolve, remaining));
-      }
+      // Ensure loading screen shows for at least 3 seconds
+      await new Promise(resolve => setTimeout(resolve, 3000));
 
       if (!cancelled) setIsPageReady(true);
     };
 
     preparePage();
 
-    const timeout = setTimeout(() => {
-      if (!cancelled) setIsPageReady(true);
-    }, MAX_LOADING_MS);
-
     return () => {
       cancelled = true;
-      clearTimeout(timeout);
     };
   }, []);
 
@@ -238,10 +228,14 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
   }, [zurichIndex]);
 
   const fetchProjects = async (): Promise<Project[]> => {
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), PROJECT_FETCH_TIMEOUT_MS);
+
     try {
       const serverUrl = `https://${projectId}.supabase.co/functions/v1/make-server-548e39aa`;
       const response = await fetch(`${serverUrl}/projects`, {
         method: 'GET',
+        signal: controller.signal,
         headers: {
           'Content-Type': 'application/json',
         },
@@ -264,6 +258,8 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
       return DEFAULT_PROJECTS;
     } catch (err) {
       return DEFAULT_PROJECTS;
+    } finally {
+      window.clearTimeout(timeout);
     }
   };
 
@@ -298,7 +294,7 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
   if (!isPageReady) {
     return (
       <div className={`min-h-screen ${isDark ? "bg-neutral-900" : "bg-white"} pt-20 flex items-center justify-center`}>
-        <div className={`${isDark ? "text-white" : "text-neutral-900"}`}>Loading projects...</div>
+        <PageLoader isDark={isDark} />
       </div>
     );
   }

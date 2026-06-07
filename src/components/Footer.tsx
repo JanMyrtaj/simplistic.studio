@@ -1,4 +1,5 @@
 import { Instagram, Linkedin, Facebook } from "lucide-react";
+import React from "react";
 
 interface FooterProps {
   isDark: boolean;

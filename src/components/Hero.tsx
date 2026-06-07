@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
+import React from "react";
 
 interface HeroProps {
   isDark: boolean;
