@@ -4,9 +4,17 @@ import { projectId } from '../utils/supabase/info';
 import { motion, AnimatePresence } from 'motion/react';
 import { Lightbox } from './ui/lightbox';
 import { PageLoader } from './ProjectsLoading';
-import React from "react";
+import { preloadImage, preloadImages } from '../utils/imagePreload';
 
-// Gjakova, Kosovo
+// Gjakova 2, Kosovo — Architecture
+import gjakova2Render1 from '../assets/gjakova 2/Render 1.jpg';
+import gjakova2Render2 from '../assets/gjakova 2/Render 2.jpg';
+import gjakova2Render3 from '../assets/gjakova 2/Render 3.jpg';
+import gjakova2Render4 from '../assets/gjakova 2/Render 4.jpg';
+import gjakova2Render5 from '../assets/gjakova 2/Render 5.jpg';
+import gjakova2Render6 from '../assets/gjakova 2/Render 6.jpg';
+import gjakova2Render7 from '../assets/gjakova 2/Render 7.jpg';
+// Gjakova, Kosovo — Interior
 import projectLivingKitchen from '../assets/gjakova/project-living-kitchen.png';
 import projectLivingRoom from '../assets/gjakova/project-living-room.png';
 import projectLivingDining from '../assets/gjakova/project-living-dining.png';
@@ -72,6 +80,16 @@ interface Project {
   category: string;
   createdAt: string;
 }
+
+const GJAKOVA2_PROJECTS: Project[] = [
+  { id: 'gjakova2-1', title: 'Front Facade', description: 'Modern villa front elevation with stone cladding, wood accent column, landscaped entry, and clean minimalist geometry.', imageUrl: gjakova2Render1, category: 'Gjakova, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'gjakova2-2', title: 'Driveway & Carport', description: 'Cantilevered upper volume shelters the driveway, with wood paneling, stone walls, and integrated strip lighting.', imageUrl: gjakova2Render2, category: 'Gjakova, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'gjakova2-3', title: 'Pool & Outdoor Kitchen', description: 'Pool terrace with built-in outdoor kitchen, marble bar, wooden pergola, and loungers reflected in the water.', imageUrl: gjakova2Render3, category: 'Gjakova, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'gjakova2-4', title: 'Covered Terrace', description: 'Ground-floor terrace with stone walls, wood decking, integrated LED lighting, and outdoor lounge seating.', imageUrl: gjakova2Render4, category: 'Gjakova, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'gjakova2-5', title: 'Outdoor Dining & Lounge', description: 'Split patio with wooden dining table, lounge chairs, hanging greenery, and warm evening lighting.', imageUrl: gjakova2Render5, category: 'Gjakova, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'gjakova2-6', title: 'Backyard & Pool', description: 'Rear elevation with swimming pool, pergola dining area, sun loungers, and open views to the landscape.', imageUrl: gjakova2Render6, category: 'Gjakova, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'gjakova2-7', title: 'Street Elevation', description: 'Full street-facing view of Vila 01 with pool, outdoor living areas, and contemporary perimeter design.', imageUrl: gjakova2Render7, category: 'Gjakova, Kosovo', createdAt: new Date().toISOString() },
+];
 
 const DEFAULT_PROJECTS: Project[] = [
   { id: 'default-1', title: 'Open-Plan Living & Kitchen', description: 'Open-plan living and kitchen with a stone fireplace, light-toned seating, and herringbone wood flooring.', imageUrl: projectLivingKitchen, category: 'Gjakova, Kosovo', createdAt: new Date().toISOString() },
@@ -140,30 +158,15 @@ interface ProjectsPageProps {
   isDark: boolean;
 }
 
-const preloadImages = (urls: string[]) => {
-  if (typeof window === 'undefined') return;
-  urls.forEach((url) => {
-    if (!url) return;
-    const img = new Image();
-    img.src = url;
-  });
-};
-
-const loadImage = (url: string): Promise<void> =>
-  new Promise((resolve) => {
-    if (!url) {
-      resolve();
-      return;
-    }
-    const img = new Image();
-    img.onload = () => resolve();
-    img.onerror = () => resolve();
-    img.src = url;
-  });
+const getCriticalImageUrls = () => [
+  GJAKOVA2_PROJECTS[0]?.imageUrl,
+  GJAKOVA2_PROJECTS[1]?.imageUrl,
+  PRISHTINA_PROJECTS[0]?.imageUrl,
+].filter(Boolean) as string[];
 
 const getProjectImageUrls = (gjakovaProjects: Project[]) => {
   const urls = new Set<string>();
-  [PRISHTINA_PROJECTS, ZURICH_PROJECTS, gjakovaProjects].forEach((items) => {
+  [GJAKOVA2_PROJECTS, PRISHTINA_PROJECTS, ZURICH_PROJECTS, gjakovaProjects].forEach((items) => {
     items.forEach((item) => {
       if (item.imageUrl) urls.add(item.imageUrl);
     });
@@ -171,7 +174,7 @@ const getProjectImageUrls = (gjakovaProjects: Project[]) => {
   return [...urls];
 };
 
-const PROJECT_FETCH_TIMEOUT_MS = 10000;
+const PROJECT_FETCH_TIMEOUT_MS = 4000;
 
 const preloadAdjacent = (items: Project[], index: number) => {
   if (items.length === 0) return;
@@ -187,22 +190,28 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [zurichIndex, setZurichIndex] = useState(0);
   const [prishtinaIndex, setPrishtinaIndex] = useState(0);
+  const [gjakova2Index, setGjakova2Index] = useState(0);
   const [projects, setProjects] = useState<Project[]>(DEFAULT_PROJECTS);
   const [isPageReady, setIsPageReady] = useState(false);
-  type LightboxSection = 'prishtina' | 'gjakova' | 'zurich';
+  type LightboxSection = 'gjakova2' | 'prishtina' | 'gjakova' | 'zurich';
   const [lightboxSection, setLightboxSection] = useState<LightboxSection | null>(null);
 
   useEffect(() => {
     let cancelled = false;
 
     const preparePage = async () => {
-      const projectList = await fetchProjects();
+      const fetchPromise = fetchProjects();
+
+      await Promise.all(getCriticalImageUrls().map((url) => preloadImage(url)));
+      if (!cancelled) setIsPageReady(true);
+
+      const projectList = await fetchPromise;
       if (cancelled) return;
 
       setProjects(projectList);
-      await Promise.all(getProjectImageUrls(projectList).map((url) => loadImage(url)));
 
-      if (!cancelled) setIsPageReady(true);
+      const critical = new Set(getCriticalImageUrls());
+      preloadImages(getProjectImageUrls(projectList).filter((url) => !critical.has(url)));
     };
 
     preparePage();
@@ -211,6 +220,10 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
       cancelled = true;
     };
   }, []);
+
+  useEffect(() => {
+    preloadAdjacent(GJAKOVA2_PROJECTS, gjakova2Index);
+  }, [gjakova2Index]);
 
   useEffect(() => {
     preloadAdjacent(PRISHTINA_PROJECTS, prishtinaIndex);
@@ -288,6 +301,14 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
     setPrishtinaIndex((prev) => (prev - 1 + PRISHTINA_PROJECTS.length) % PRISHTINA_PROJECTS.length);
   };
 
+  const nextGjakova2 = () => {
+    setGjakova2Index((prev) => (prev + 1) % GJAKOVA2_PROJECTS.length);
+  };
+
+  const prevGjakova2 = () => {
+    setGjakova2Index((prev) => (prev - 1 + GJAKOVA2_PROJECTS.length) % GJAKOVA2_PROJECTS.length);
+  };
+
   if (!isPageReady) {
     return (
       <div className={`min-h-screen ${isDark ? "bg-neutral-900" : "bg-white"} pt-20 flex items-center justify-center`}>
@@ -331,11 +352,111 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
           PROJECT SECTIONS ORDER:
           Sections are displayed in order from top to bottom.
           To add a new section, insert it HERE (right after this comment) so it appears first.
-          Current order: Prishtina → Gjakova → Zurich
+          Current order: Gjakova 2 → Prishtina → Gjakova → Zurich
         */}
 
-        {/* Prishtina section — FIRST */}
+        {/* Gjakova 2 section — FIRST */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center pb-20">
+          <div
+            className="relative w-full overflow-hidden rounded-lg bg-neutral-200/20 cursor-pointer"
+            style={{ aspectRatio: '5/4', minHeight: 240 }}
+            onClick={() => setLightboxSection('gjakova2')}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => e.key === 'Enter' && setLightboxSection('gjakova2')}
+            aria-label="View fullscreen"
+          >
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={`gjakova2-image-${gjakova2Index}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25, ease: "easeInOut" }}
+                className="absolute inset-0"
+              >
+                <img
+                  src={GJAKOVA2_PROJECTS[gjakova2Index].imageUrl}
+                  alt={GJAKOVA2_PROJECTS[gjakova2Index].title}
+                  className="block w-full h-full object-cover"
+                  loading="eager"
+                  fetchPriority="high"
+                  decoding="async"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="800" height="600"%3E%3Crect fill="%23ddd" width="800" height="600"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="20" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EImage not available%3C/text%3E%3C/svg%3E';
+                  }}
+                />
+              </motion.div>
+            </AnimatePresence>
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); prevGjakova2(); }}
+              className={`absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full z-10 ${
+                isDark ? "bg-white/90 text-neutral-900 hover:bg-white" : "bg-neutral-900/90 text-white hover:bg-neutral-900"
+              } transition-colors shadow-lg`}
+              aria-label="Previous project"
+            >
+              <ChevronLeft size={24} />
+            </button>
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); nextGjakova2(); }}
+              className={`absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full z-10 ${
+                isDark ? "bg-white/90 text-neutral-900 hover:bg-white" : "bg-neutral-900/90 text-white hover:bg-neutral-900"
+              } transition-colors shadow-lg`}
+              aria-label="Next project"
+            >
+              <ChevronRight size={24} />
+            </button>
+            <div className={`absolute bottom-4 left-1/2 -translate-x-1/2 px-4 py-2 rounded-full z-10 ${
+              isDark ? "bg-white/90 text-neutral-900" : "bg-neutral-900/90 text-white"
+            }`}>
+              {gjakova2Index + 1} / {GJAKOVA2_PROJECTS.length}
+            </div>
+          </div>
+          <div className="overflow-hidden min-h-[220px]">
+            <AnimatePresence mode="wait" initial={false}>
+              <motion.div
+                key={`gjakova2-description-${gjakova2Index}`}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25, ease: "easeInOut" }}
+                className="space-y-6"
+              >
+                <div>
+                  <span className={`${isDark ? "text-neutral-400" : "text-neutral-500"} uppercase tracking-wider`}>
+                    {GJAKOVA2_PROJECTS[gjakova2Index].category}
+                  </span>
+                  <h2 className={`${isDark ? "text-white" : "text-neutral-900"} mt-3 mb-4`}>
+                    {GJAKOVA2_PROJECTS[gjakova2Index].title}
+                  </h2>
+                </div>
+                <p className={`${isDark ? "text-neutral-300" : "text-neutral-600"} leading-relaxed`}>
+                  {GJAKOVA2_PROJECTS[gjakova2Index].description}
+                </p>
+                <div className="flex gap-2 pt-4">
+                  {GJAKOVA2_PROJECTS.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setGjakova2Index(index)}
+                      className={`h-2 rounded-full transition-all duration-200 ${
+                        index === gjakova2Index
+                          ? `w-8 ${isDark ? "bg-white" : "bg-neutral-900"}`
+                          : `w-2 ${isDark ? "bg-neutral-700" : "bg-neutral-300"}`
+                      }`}
+                      aria-label={`Go to project ${index + 1}`}
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+
+        {/* Prishtina section — SECOND */}
+        <div className={`mt-24 mb-8 pt-20 pb-8 border-t ${isDark ? "border-neutral-700" : "border-neutral-200"}`} style={{ marginTop: '6rem', paddingTop: '5rem' }}>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <div
             className="relative w-full overflow-hidden rounded-lg bg-neutral-200/20 cursor-pointer"
             style={{ aspectRatio: '5/4', minHeight: 240 }}
@@ -431,9 +552,10 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
               </motion.div>
             </AnimatePresence>
           </div>
+          </div>
         </div>
 
-        {/* Gjakova section — SECOND */}
+        {/* Gjakova section — THIRD */}
         <div className={`mt-24 mb-8 pt-20 pb-8 border-t ${isDark ? "border-neutral-700" : "border-neutral-200"}`} style={{ marginTop: '6rem', paddingTop: '5rem' }}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div
@@ -533,7 +655,7 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
           </div>
         </div>
 
-        {/* Zurich section — THIRD */}
+        {/* Zurich section — FOURTH */}
         <div className={`mt-24 mb-8 pt-20 pb-8 border-t ${isDark ? "border-neutral-700" : "border-neutral-200"}`} style={{ marginTop: '6rem', paddingTop: '5rem' }}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div
@@ -634,10 +756,26 @@ export function ProjectsPage({ isDark }: ProjectsPageProps) {
         </div>
 
         {lightboxSection && (() => {
-          const list = lightboxSection === 'prishtina' ? PRISHTINA_PROJECTS : lightboxSection === 'zurich' ? ZURICH_PROJECTS : projects;
-          const idx = lightboxSection === 'prishtina' ? prishtinaIndex : lightboxSection === 'zurich' ? zurichIndex : currentIndex;
-          const prev = lightboxSection === 'prishtina' ? prevPrishtina : lightboxSection === 'zurich' ? prevZurich : prevProject;
-          const next = lightboxSection === 'prishtina' ? nextPrishtina : lightboxSection === 'zurich' ? nextZurich : nextProject;
+          const list =
+            lightboxSection === 'gjakova2' ? GJAKOVA2_PROJECTS
+            : lightboxSection === 'prishtina' ? PRISHTINA_PROJECTS
+            : lightboxSection === 'zurich' ? ZURICH_PROJECTS
+            : projects;
+          const idx =
+            lightboxSection === 'gjakova2' ? gjakova2Index
+            : lightboxSection === 'prishtina' ? prishtinaIndex
+            : lightboxSection === 'zurich' ? zurichIndex
+            : currentIndex;
+          const prev =
+            lightboxSection === 'gjakova2' ? prevGjakova2
+            : lightboxSection === 'prishtina' ? prevPrishtina
+            : lightboxSection === 'zurich' ? prevZurich
+            : prevProject;
+          const next =
+            lightboxSection === 'gjakova2' ? nextGjakova2
+            : lightboxSection === 'prishtina' ? nextPrishtina
+            : lightboxSection === 'zurich' ? nextZurich
+            : nextProject;
           const project = list[idx];
           if (!project) return null;
           return (

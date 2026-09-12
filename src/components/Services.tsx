@@ -30,7 +30,7 @@ interface ServicesProps {
 
 export function Services({ isDark }: ServicesProps) {
   return (
-    <section id="services" className={`py-24 ${isDark ? "bg-neutral-900" : "bg-white"}`}>
+    <section id="services" className={`py-24 ${isDark ? "bg-neutral-900" : "bg-neutral-100"}`}>
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <motion.div 
           initial={{ opacity: 0, y: 30 }}

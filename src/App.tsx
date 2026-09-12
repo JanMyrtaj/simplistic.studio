@@ -4,9 +4,13 @@ import { About } from "./components/About";
 import { Services } from "./components/Services";
 import { Contact } from "./components/Contact";
 import { Footer } from "./components/Footer";
-import { ProjectsPage } from "./components/ProjectsPage";
 import { IntroSplash } from "./components/IntroSplash";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, lazy, Suspense } from "react";
+import { PageLoader } from "./components/ProjectsLoading";
+
+const ProjectsPage = lazy(() =>
+  import("./components/ProjectsPage").then((module) => ({ default: module.ProjectsPage }))
+);
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from "react-router-dom";
 
 function MainApp() {
@@ -71,7 +75,14 @@ function MainApp() {
             </>
           }
         />
-        <Route path="/projects" element={<ProjectsPage isDark={isDark} />} />
+        <Route
+          path="/projects"
+          element={
+            <Suspense fallback={<PageLoader isDark={isDark} />}>
+              <ProjectsPage isDark={isDark} />
+            </Suspense>
+          }
+        />
       </Routes>
 
       <Footer isDark={isDark} navigateTo={navigateTo} />

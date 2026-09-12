@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { isImageLoaded, preloadImage } from "../../utils/imagePreload";
 
 interface LightboxProps {
   isOpen: boolean;
@@ -23,9 +24,14 @@ export function Lightbox({
 
   useEffect(() => {
     if (!imageUrl) return;
+
+    if (isImageLoaded(imageUrl)) {
+      setImageLoaded(true);
+      return;
+    }
+
     setImageLoaded(false);
-    const img = new Image();
-    img.src = imageUrl;
+    void preloadImage(imageUrl).then(() => setImageLoaded(true));
   }, [imageUrl]);
 
   useEffect(() => {
@@ -54,7 +60,7 @@ export function Lightbox({
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.25 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 md:p-8 lg:p-10"
           style={{
             backdropFilter: "blur(12px)",
             WebkitBackdropFilter: "blur(12px)",
@@ -68,7 +74,7 @@ export function Lightbox({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.96 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="relative w-full max-w-2xl max-h-[50vh] flex items-center justify-center min-h-[200px]"
+            className="relative w-full max-w-2xl max-h-[55vh] md:max-w-5xl md:max-h-[80vh] lg:max-w-6xl lg:max-h-[85vh] xl:max-w-7xl flex items-center justify-center min-h-[200px]"
             style={{ zIndex: 0 }}
             onClick={(e) => e.stopPropagation()}
           >
@@ -84,7 +90,7 @@ export function Lightbox({
               fetchPriority="high"
               onLoad={() => setImageLoaded(true)}
               onError={() => setImageLoaded(true)}
-              className={`max-w-full max-h-[50vh] w-auto h-auto object-contain rounded-lg shadow-2xl transition-opacity duration-200 ${
+              className={`max-w-full max-h-[55vh] md:max-h-[80vh] lg:max-h-[85vh] w-auto h-auto object-contain rounded-lg shadow-2xl transition-opacity duration-200 ${
                 imageLoaded ? "opacity-100" : "opacity-0"
               }`}
             />

@@ -10,6 +10,7 @@ export function Hero({ isDark }: HeroProps) {
   const navigate = useNavigate();
 
   const handleViewWork = () => {
+    void import('./ProjectsPage');
     navigate('/projects');
     window.scrollTo(0, 0);
   };
@@ -21,8 +22,8 @@ export function Hero({ isDark }: HeroProps) {
         isDark ? "bg-neutral-900" : "bg-neutral-100"
       }`}
       style={{
-        backgroundImage: isDark 
-          ? 'url(/backgrounds/background-dark.png)' 
+        backgroundImage: isDark
+          ? 'url(/backgrounds/background-dark.png)'
           : 'url(/backgrounds/background-light.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
