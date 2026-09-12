@@ -82,13 +82,13 @@ interface Project {
 }
 
 const GJAKOVA2_PROJECTS: Project[] = [
-  { id: 'gjakova2-1', title: 'Front Facade', description: 'Modern villa front elevation with stone cladding, wood accent column, landscaped entry, and clean minimalist geometry.', imageUrl: gjakova2Render1, category: 'Gjakova, Kosovo', createdAt: new Date().toISOString() },
-  { id: 'gjakova2-2', title: 'Driveway & Carport', description: 'Cantilevered upper volume shelters the driveway, with wood paneling, stone walls, and integrated strip lighting.', imageUrl: gjakova2Render2, category: 'Gjakova, Kosovo', createdAt: new Date().toISOString() },
-  { id: 'gjakova2-3', title: 'Pool & Outdoor Kitchen', description: 'Pool terrace with built-in outdoor kitchen, marble bar, wooden pergola, and loungers reflected in the water.', imageUrl: gjakova2Render3, category: 'Gjakova, Kosovo', createdAt: new Date().toISOString() },
-  { id: 'gjakova2-4', title: 'Covered Terrace', description: 'Ground-floor terrace with stone walls, wood decking, integrated LED lighting, and outdoor lounge seating.', imageUrl: gjakova2Render4, category: 'Gjakova, Kosovo', createdAt: new Date().toISOString() },
-  { id: 'gjakova2-5', title: 'Outdoor Dining & Lounge', description: 'Split patio with wooden dining table, lounge chairs, hanging greenery, and warm evening lighting.', imageUrl: gjakova2Render5, category: 'Gjakova, Kosovo', createdAt: new Date().toISOString() },
-  { id: 'gjakova2-6', title: 'Backyard & Pool', description: 'Rear elevation with swimming pool, pergola dining area, sun loungers, and open views to the landscape.', imageUrl: gjakova2Render6, category: 'Gjakova, Kosovo', createdAt: new Date().toISOString() },
-  { id: 'gjakova2-7', title: 'Street Elevation', description: 'Full street-facing view of Vila 01 with pool, outdoor living areas, and contemporary perimeter design.', imageUrl: gjakova2Render7, category: 'Gjakova, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'gjakova2-1', title: 'Front Facade', description: 'Modern villa front elevation with stone cladding, wood accent column, landscaped entry, and clean minimalist geometry.', imageUrl: gjakova2Render1, category: 'Gjilan, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'gjakova2-2', title: 'Driveway & Carport', description: 'Cantilevered upper volume shelters the driveway, with wood paneling, stone walls, and integrated strip lighting.', imageUrl: gjakova2Render2, category: 'Gjilan, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'gjakova2-3', title: 'Pool & Outdoor Kitchen', description: 'Pool terrace with built-in outdoor kitchen, marble bar, wooden pergola, and loungers reflected in the water.', imageUrl: gjakova2Render3, category: 'Gjilan, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'gjakova2-4', title: 'Covered Terrace', description: 'Ground-floor terrace with stone walls, wood decking, integrated LED lighting, and outdoor lounge seating.', imageUrl: gjakova2Render4, category: 'Gjilan, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'gjakova2-5', title: 'Outdoor Dining & Lounge', description: 'Split patio with wooden dining table, lounge chairs, hanging greenery, and warm evening lighting.', imageUrl: gjakova2Render5, category: 'Gjilan, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'gjakova2-6', title: 'Backyard & Pool', description: 'Rear elevation with swimming pool, pergola dining area, sun loungers, and open views to the landscape.', imageUrl: gjakova2Render6, category: 'Gjilan, Kosovo', createdAt: new Date().toISOString() },
+  { id: 'gjakova2-7', title: 'Street Elevation', description: 'Full street-facing view of Vila 01 with pool, outdoor living areas, and contemporary perimeter design.', imageUrl: gjakova2Render7, category: 'Gjilan, Kosovo', createdAt: new Date().toISOString() },
 ];
 
 const DEFAULT_PROJECTS: Project[] = [
